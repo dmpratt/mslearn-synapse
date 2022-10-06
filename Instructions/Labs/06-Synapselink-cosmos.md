@@ -212,12 +212,8 @@ Now you're ready to query your Cosmos DB database from Azure Synapse Analytics.
 7. Add another new code cell and enter the following code:
 
     ```python
-    from pyspark.sql import functions as F
-
-    custdetails_df = customer_df.select("customerid",
-        F.json_tuple(F.to_json(F.col("customerdetails")),"customername", "customeremail"))
-
-    display(custdetails_df)
+    customerdetails_df = df.select("customerid", "customerdetails.*")
+    display(customerdetails_df)
     ```
 
 8. Run the cell and review the results, which should include the **customername** and **customeremail** from the **customerdetails** value as columns:
@@ -228,7 +224,7 @@ Now you're ready to query your Cosmos DB database from Azure Synapse Analytics.
     | 125 | Emma Brown |emma3@adventure-works.com |
     | 123 | Christy Zhu | christy12@adventure-works.com |
 
-    Spark enables you to run complex data manipulation code to restructure and explore the data from Cosmos DB. In this case, the PySpark language includes a **sql** library that provides functions for manipulating JSON data.
+    Spark enables you to run complex data manipulation code to restructure and explore the data from Cosmos DB. In this case, the PySpark language enables you to navigate the JSOAN properties hierarchy to retrieve the child fields of the **customerdetails** field.
 
 9. Add another new code cell and enter the following code:
 
@@ -270,7 +266,7 @@ Now you're ready to query your Cosmos DB database from Azure Synapse Analytics.
     | SO43704 | 2019-07-01 | Julio Ruiz |Mountain-100 Black, 48 |
     | SO43707 | 2019-07-02 | Emma Brown |Road-150 Red, 48 |
 
-    Observe that when using Spark SQL, you can retrieve subelements of a JSON structure as properties.
+    Observe that when using Spark SQL, you can retrieve named properties of a JSON structure as columns.
 
 12. Keep the **Notebook 1** tab open - you'll return to it later.
 
