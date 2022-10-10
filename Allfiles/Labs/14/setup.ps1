@@ -4,11 +4,6 @@ write-host "Starting script at $(Get-Date)"
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 Install-Module -Name Az.Synapse -Force
 
-# Install Azure ML CLI
-az extension remove -n azure-cli-ml
-az extension remove -n ml
-az extension add -n ml -y
-
 # Handle cases where the user has multiple subscriptions
 $subs = Get-AzSubscription | Select-Object
 if($subs.GetType().IsArray -and $subs.length -gt 1){
