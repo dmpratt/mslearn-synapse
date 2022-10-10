@@ -232,7 +232,7 @@ So far, you've seen how to use a Stream Analytics job to ingest messages from a 
         [datalake]
     FROM
         [orders] TIMESTAMP BY EventProcessedUtcTime
-    GROUP BY ProductID, SlidingWindow(second, 5)
+    GROUP BY ProductID, TumblingWindow(second, 5)
     HAVING COUNT(*) > 1
     ```
 
