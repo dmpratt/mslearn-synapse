@@ -122,7 +122,7 @@ Let's start by ingesting a stream of data directly into a table in an Azure Syna
     - **Authentication mode**: SQL server authentication
     - **Username**: SQLUser
     - **Password**: *The password you specified for your SQL Pool when running the setup script*
-    - **Table**: FactOrder
+    - **Table**: `FactOrder`
 2. Save the output and wait while it is created. You will see several notifications. Wait for a **Successful connection test** notification.
 
 ### Create a query to ingest the event stream
