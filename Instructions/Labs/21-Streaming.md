@@ -252,7 +252,7 @@ So far, you've seen how to use a Stream Analytics job to ingest messages from a 
 4.  When the order app has finished, minimize the cloud shell pane. Then switch to the Synapse Studio browser tab and on the **Data** page, on the **Linked** tab, expand **Azure Data Lake Storage Gen2** > **synapse*xxxxxxx* (primary - datalake*xxxxxxx*)** and select the **files (Primary)** container.
 5. If the **files** container is empty, wait a minute or so and then use the **&#8635; Refresh** to refresh the view. Eventually, a folder named for the current year should be displayed. This in turn contains folders for the month and day.
 6. Select the folder for the year and on the **New SQL script** menu, select **Select TOP 100 rows**. Then set the **File type** to **Parquet format** and apply the settings.
-7. In the query pane that opens, use the **&#9655; Run** button to run the SQL query that reads the data files in the data lake store and view the results, which show the quantity of each product ordered in five-minute periods.
+7. In the query pane that opens, use the **&#9655; Run** button to run the SQL query that reads the data files in the data lake store and view the results, which show the quantity of each product ordered in five-second periods.
 8. Return to the browser tab containing the Azure Portal and use the **&#128454; Stop** button to stop the Stream Analytics job and wait for the notification that the Stream Analytics job has stopped successfully.
 
 ## Delete Azure resources
