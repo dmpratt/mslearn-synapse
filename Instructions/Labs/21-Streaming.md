@@ -107,7 +107,7 @@ Let's start by ingesting a stream of data directly into a table in an Azure Syna
     - **Event Hub name**: Select the existing **eventhub*xxxxxxx*** event hub.
     - **Event Hub consumer group**: Select the existing **$Default** consumer group
     - **Authentication mode**: Create system assigned managed identity
-    - **Parition key**: *Leave blank*
+    - **Partition key**: *Leave blank*
     - **Event serialization format**: JSON
     - **Encoding**: UTF-8
 2. Save the input and wait while it is created. You will see several notifications. Wait for a **Successful connection test** notification.
@@ -194,7 +194,7 @@ So far, you've seen how to use a Stream Analytics job to ingest messages from a 
     - **Event Hub name**: Select the existing **eventhub*xxxxxxx*** event hub.
     - **Event Hub consumer group**: Select the existing **$Default** consumer group
     - **Authentication mode**: Create system assigned managed identity
-    - **Parition key**: *Leave blank*
+    - **Partition key**: *Leave blank*
     - **Event serialization format**: JSON
     - **Encoding**: UTF-8
 2. Save the input and wait while it is created. You will see several notifications. Wait for a **Successful connection test** notification.
