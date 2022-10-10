@@ -4,6 +4,11 @@ write-host "Starting script at $(Get-Date)"
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 Install-Module -Name Az.Synapse -Force
 
+# Install Azure ML CLI
+az extension remove -n azure-cli-ml
+az extension remove -n ml
+az extension add -n ml -y
+
 # Handle cases where the user has multiple subscriptions
 $subs = Get-AzSubscription | Select-Object
 if($subs.GetType().IsArray -and $subs.length -gt 1){
@@ -69,11 +74,15 @@ while ($complexPassword -ne 1)
 
 # Register resource providers
 Write-Host "Registering resource providers...";
-$provider_list = "Microsoft.Synapse", "Microsoft.Sql", "Microsoft.Storage", "Microsoft.Compute"
+$provider_list = "Microsoft.Synapse", "Microsoft.Sql", "Microsoft.Storage", "Microsoft.Compute", "Microsoft.MachineLearningServices"
 foreach ($provider in $provider_list){
     $result = Register-AzResourceProvider -ProviderNamespace $provider
-    $status = $result.RegistrationState
-    Write-Host "$provider : $status"
+    while ($result.RegistrationState -eq "Registering") {
+        
+        Start-Sleep -Seconds 3
+        $result = Register-AzResourceProvider -ProviderNamespace $provider
+    }
+    Write-Host "$provider registered"
 }
 
 # Generate unique random suffix
@@ -91,6 +100,7 @@ $locations = Get-AzLocation | Where-Object {
     $_.Providers -contains "Microsoft.Sql" -and
     $_.Providers -contains "Microsoft.Storage" -and
     $_.Providers -contains "Microsoft.Compute" -and
+    $_.Providers -contains "Microsoft.MachineLearningServices" -and
     $_.Location -in $preferred_list
 }
 $max_index = $locations.Count - 1
@@ -130,17 +140,24 @@ $Region = $locations.Get($rand).Location
 Write-Host "Creating $resourceGroupName resource group in $Region ..."
 New-AzResourceGroup -Name $resourceGroupName -Location $Region | Out-Null
 
+# Create Azure Machine Learning workspace
+$amlWorkspace = "aml$suffix"
+Write-Host "Creating $amlWorkspace Azure Machine Learning workspace in $resourceGroupName resource group..."
+az ml workspace create --name $amlWorkspace --resource-group $resourceGroupName --no-wait
+
 # Create Synapse workspace
 $synapseWorkspace = "synapse$suffix"
 $dataLakeAccountName = "datalake$suffix"
+$sparkPool = "spark$suffix"
 $sqlDatabaseName = "sql$suffix"
 
 write-host "Creating $synapseWorkspace Synapse Analytics workspace in $resourceGroupName resource group..."
 New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName `
   -TemplateFile "setup.json" `
-  -Mode Complete `
+  -Mode Incremental `
   -workspaceName $synapseWorkspace `
   -dataLakeAccountName $dataLakeAccountName `
+  -sparkPoolName $sparkPool `
   -sqlDatabaseName $sqlDatabaseName `
   -sqlUser $sqlUser `
   -sqlPassword $sqlPassword `
@@ -157,17 +174,23 @@ New-AzRoleAssignment -Objectid $id -RoleDefinitionName "Storage Blob Data Owner"
 New-AzRoleAssignment -SignInName $userName -RoleDefinitionName "Storage Blob Data Owner" -Scope "/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Storage/storageAccounts/$dataLakeAccountName" -ErrorAction SilentlyContinue;
 
 # Upload files
-write-host "Loading data..."
+write-host "Uploading files..."
 $storageAccount = Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $dataLakeAccountName
 $storageContext = $storageAccount.Context
-Get-ChildItem "./data/*.csv" -File | Foreach-Object {
+Get-ChildItem "./files/*.csv" -File | Foreach-Object {
     write-host ""
     $file = $_.Name
     Write-Host $file
-    $blobPath = "sales/csv/$file"
+    $blobPath = "data/$file"
     Set-AzStorageBlobContent -File $_.FullName -Container "files" -Blob $blobPath -Context $storageContext
 }
 
+# Create database
+write-host "Creating the $sqlDatabaseName database..."
+$setupSQL = Get-Content -Path "setup.sql" -Raw
+$setupSQL = $setupSQL.Replace("datalakexxxxxxx", $dataLakeAccountName)
+Set-Content -Path "setup$suffix.sql" -Value $setupSQL
+sqlcmd -S "$synapseWorkspace.sql.azuresynapse.net" -U $sqlUser -P $sqlPassword -d $sqlDatabaseName -I -i setup$suffix.sql
 
 # Pause SQL Pool
 write-host "Pausing the $sqlDatabaseName SQL Pool..."
