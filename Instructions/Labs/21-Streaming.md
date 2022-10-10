@@ -210,7 +210,7 @@ So far, you've seen how to use a Stream Analytics job to ingest messages from a 
     - **Authentication mode**: Managed Identity: System assigned
     - **Event serialization format**: Parquet
     - **Path pattern**: `{date}`
-    - **Date format**: YYY/MM/DD
+    - **Date format**: YYYY/MM/DD
     - **Time format**: *Not applicable*
     - **Minimum rows**: 2000
     - **Maximum time**: 0 Hours, 1 minutes, 0 seconds
