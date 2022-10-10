@@ -133,6 +133,7 @@ New-AzResourceGroup -Name $resourceGroupName -Location $Region | Out-Null
 # Create Synapse workspace
 $synapseWorkspace = "synapse$suffix"
 $dataLakeAccountName = "datalake$suffix"
+$sqlDatabaseName = "sql$suffix"
 
 write-host "Creating $synapseWorkspace Synapse Analytics workspace in $resourceGroupName resource group..."
 New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName `
@@ -140,6 +141,7 @@ New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName `
   -Mode Complete `
   -workspaceName $synapseWorkspace `
   -dataLakeAccountName $dataLakeAccountName `
+  -sqlDatabaseName $sqlDatabaseName `
   -sqlUser $sqlUser `
   -sqlPassword $sqlPassword `
   -uniqueSuffix $suffix `
