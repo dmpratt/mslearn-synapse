@@ -95,7 +95,6 @@ $locations = Get-AzLocation | Where-Object {
     $_.Providers -contains "Microsoft.Sql" -and
     $_.Providers -contains "Microsoft.Storage" -and
     $_.Providers -contains "Microsoft.Compute" -and
-    $_.Providers -contains "Microsoft.MachineLearningServices" -and
     $_.Location -in $preferred_list
 }
 $max_index = $locations.Count - 1
@@ -134,11 +133,6 @@ $Region = $locations.Get($rand).Location
 }
 Write-Host "Creating $resourceGroupName resource group in $Region ..."
 New-AzResourceGroup -Name $resourceGroupName -Location $Region | Out-Null
-
-# Create Azure Machine Learning workspace
-$amlWorkspace = "aml$suffix"
-Write-Host "Creating $amlWorkspace Azure Machine Learning workspace in $resourceGroupName resource group..."
-az ml workspace create --name $amlWorkspace --resource-group $resourceGroupName --no-wait
 
 # Create Synapse workspace
 $synapseWorkspace = "synapse$suffix"
