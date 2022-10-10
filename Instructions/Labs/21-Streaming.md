@@ -157,7 +157,7 @@ Let's start by ingesting a stream of data directly into a table in an Azure Syna
     ```
 
 4. While the order client app is running, switch to the Synapse Studio browser tab and view the query you previously ran to select the TOP 100 rows from the **dbo.FactOrder** table.
-5. Use the **&#9655; Run** button to re-run the query and verify that the table now contains order data from the event stream (if not, wait a minute and re-run the query).
+5. Use the **&#9655; Run** button to re-run the query and verify that the table now contains order data from the event stream (if not, wait a minute and re-run the query again).
 6. Return to the browser tab containing the Azure Portal and when the order app has finished, minimize the cloud shell pane. Then use the **&#128454; Stop** button to stop the Stream Analytics job and wait for the notification that the Stream Analytics job has stopped successfully.
 
 ## Summarize streaming data in a data lake
