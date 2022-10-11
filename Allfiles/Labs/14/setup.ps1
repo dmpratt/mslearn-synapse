@@ -156,6 +156,8 @@ write-host "Granting permissions on the $dataLakeAccountName storage account..."
 write-host "(you can ignore any warnings!)"
 $subscriptionId = (Get-AzContext).Subscription.Id
 $userName = ((az ad signed-in-user show) | ConvertFrom-JSON).UserPrincipalName
+write-host $subscriptionId, $userName
+
 $id = (Get-AzADServicePrincipal -DisplayName $synapseWorkspace).id
 New-AzRoleAssignment -Objectid $id -RoleDefinitionName "Storage Blob Data Owner" -Scope "/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Storage/storageAccounts/$dataLakeAccountName" -ErrorAction SilentlyContinue;
 New-AzRoleAssignment -SignInName $userName -RoleDefinitionName "Storage Blob Data Owner" -Scope "/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Storage/storageAccounts/$dataLakeAccountName" -ErrorAction SilentlyContinue;
