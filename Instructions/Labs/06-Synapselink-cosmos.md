@@ -151,8 +151,8 @@ Now that you have prepared your Azure Cosmos DB account, you can configure Azure
     ![Adding an Azure Cosmos DB SQl API external data link](./images/add-cosmos-db-link.png)
 
 6. Continue, and create a new Cosmos DB connection with the following settings:
-    - **Name**: AdventureWorksSQL
-    - **Description**: AdventureWorks Cosmos DB SQL API database
+    - **Name**: AdventureWorks
+    - **Description**: AdventureWorks Cosmos DB database
     - **Connect via integration runtime**: AutoResolveIntegrationRuntime
     - **Authentication type**: Account key
     - **Connection string**: *selected*
@@ -161,7 +161,7 @@ Now that you have prepared your Azure Cosmos DB account, you can configure Azure
     - **Azure Cosmos DB account name**: *select your **cosmosxxxxxxx** account*
     - **Database name**: AdventureWorks
 7. After creating the connection, use the **&#8635;** button at the top right of the **Data** page to refresh the view until an **Azure Cosmos DB** category is listed in the **Linked** pane.
-8. Expand the **Azure Cosmos DB** category to see the **AdventureWorksSQL** connection you created and the **Sales** container it contains.
+8. Expand the **Azure Cosmos DB** category to see the **AdventureWorks** connection you created and the **Sales** container it contains.
 
     ![Adding an Azure Cosmos DB SQl API external data link](./images/cosmos-linked-connection.png)
 
@@ -184,7 +184,7 @@ Now you're ready to query your Cosmos DB database from Azure Synapse Analytics.
 
     df = spark.read\
         .format("cosmos.olap")\
-        .option("spark.synapse.linkedService", "AdventureWorksSQL")\
+        .option("spark.synapse.linkedService", "AdventureWorks")\
         .option("spark.cosmos.container", "Sales")\
         .load()
 
@@ -224,7 +224,7 @@ Now you're ready to query your Cosmos DB database from Azure Synapse Analytics.
     | 125 | Emma Brown |emma3@adventure-works.com |
     | 123 | Christy Zhu | christy12@adventure-works.com |
 
-    Spark enables you to run complex data manipulation code to restructure and explore the data from Cosmos DB. In this case, the PySpark language enables you to navigate the JSOAN properties hierarchy to retrieve the child fields of the **customerdetails** field.
+    Spark enables you to run complex data manipulation code to restructure and explore the data from Cosmos DB. In this case, the PySpark language enables you to navigate the JSON properties hierarchy to retrieve the child fields of the **customerdetails** field.
 
 9. Add another new code cell and enter the following code:
 
@@ -238,7 +238,7 @@ Now you're ready to query your Cosmos DB database from Azure Synapse Analytics.
 
     -- Create a table from the Cosmos DB container
     CREATE TABLE salesorders using cosmos.olap options (
-        spark.synapse.linkedService 'AdventureWorksSQL',
+        spark.synapse.linkedService 'AdventureWorks',
         spark.cosmos.container 'Sales'
     );
 
