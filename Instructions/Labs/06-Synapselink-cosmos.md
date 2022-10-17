@@ -66,7 +66,7 @@ Before you can use Synapse Link for Azure Cosmos DB, you must enable it in your 
 
     ![Cosmos DB Data Explorer with Enable Azure Synapse Link button highlighted](./images/cosmos-enable-synapse-link.png)
 
-4. On the left side of the page, in the **Settings** section, select the **Features** page and verify the status of the **Azure Synapse Link** feature. If it is *Pending*, use the **&#8635; Refresh** button at the top of the page to refresh the view until it is *On*.
+4. On the left side of the page, in the **Settings** section, select the **Features** page and verify the status of the **Azure Synapse Link** feature. If it is *Off* or *Pending*, use the **&#8635; Refresh** button at the top of the page to refresh the view until it is *On*.
 
 ### Create an analytical store container
 
