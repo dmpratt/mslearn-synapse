@@ -54,10 +54,6 @@ Write-Host "Your randomly-generated suffix for Azure resources is $suffix"
 $resourceGroupName = "dp000-$suffix"
 
 # Choose a random region
-Write-Host "Finding an available region. This may take several minutes...";
-$delay = 0, 30, 60, 90, 120 | Get-Random
-Start-Sleep -Seconds $delay # random delay to stagger requests from multi-student classes
-
 $locations = Get-AzLocation | Where-Object {
     $_.Providers -contains "Microsoft.EventHub" -and
     $_.Providers -contains "Microsoft.StreamAnalytics"
@@ -79,7 +75,6 @@ New-AzResourceGroup -Name $resourceGroupName -Location $Region | Out-Null
 # Create Azure resources
 $eventNsName = "events$suffix"
 $eventHubName = "eventhub$suffix"
-$streamJobName = "stream$suffix"
 
 write-host "Creating Azure resources in $resourceGroupName resource group..."
 New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName `
@@ -88,7 +83,6 @@ New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName `
   -uniqueSuffix $suffix `
   -eventNsName $eventNsName `
   -eventHubName $eventHubName `
-  -streamJobName $streamJobName `
   -Force
 
 # Prepare JavaScript EventHub client app

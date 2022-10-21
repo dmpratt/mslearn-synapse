@@ -19,13 +19,7 @@
         "metadata": {
           "description": "EventHub name"
         }
-      },
-      "streamJobName": {
-        "type": "String",
-        "metadata": {
-          "description": "Stream Analytics job name"
       }
-    }
   },
     "variables": {
       "location": "[resourceGroup().location]"
@@ -42,32 +36,6 @@
             }
         }
     },
-    {
-      "type": "Microsoft.StreamAnalytics/streamingjobs",
-      "apiVersion": "2021-10-01-preview",
-      "name": "[parameters('streamJobName')]",
-      "location": "[variables('location')]",
-      "sku": {
-          "name": "Standard",
-          "capacity": 1
-      },
-      "identity": {
-          "type": "SystemAssigned"
-      },
-      "properties": {
-          "sku": {
-              "name": "Standard"
-          },
-          "outputStartMode": "JobStartTime",
-          "eventsOutOfOrderPolicy": "Adjust",
-          "outputErrorPolicy": "Stop",
-          "eventsOutOfOrderMaxDelayInSeconds": 0,
-          "eventsLateArrivalMaxDelayInSeconds": 5,
-          "dataLocale": "en-US",
-          "compatibilityLevel": "1.2",
-          "jobType": "Cloud"
-      }
-  },
       {
         "type": "Microsoft.EventHub/namespaces",
         "apiVersion": "2022-01-01-preview",
