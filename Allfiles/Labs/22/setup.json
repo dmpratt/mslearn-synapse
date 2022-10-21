@@ -25,7 +25,8 @@
         "metadata": {
           "description": "Stream Analytics job name"
       }
-    },
+    }
+  },
     "variables": {
       "location": "[resourceGroup().location]"
     },
