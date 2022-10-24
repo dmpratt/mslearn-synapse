@@ -150,35 +150,35 @@ An Azure Stream Analytics job defines a perpetual query that operates on streami
 Now that you have a dataset for the streaming order data, you can create a Power BI report that represents it visually.
 
 1. Use the **...** menu for the **realtime-data** dataset to create a report.
-2. In the **Visualizations** pane, select the **Line chart** visualization.
+2. In the **Visualizations** pane, select the **Clustered column chart** visualization.
 3. In the **Fields** pane, expand the **orders** table, and then drag the following fields to the appropriate areas in the **Visualizations** pane:
     - **X-axis** : **EndTime**
     - **Y-axis**: **&#8721; Orders** (this will be interpreted as *Sum of Orders*)
 
-4. Verify that your report looks similar to this:
+4. Verify that your report shows the sum of orders for each 5-second interval, and looks similar to this:
 
-    ![A screenshot of a Power BI report with a line chart showing sum of orders by end time.](./images/powerbi-line-chart.png)
+    ![A screenshot of a Power BI report with a clustered column chart showing sum of orders by end time.](./images/powerbi-line-chart.png)
 
-5. Adjust the report so that the line chart fills its width.
-6. Save the report, naming it **Realtime Orders**.
-7. Switch back to the browser tab containing the Azure portal, and if necessary, re-open the cloud shell pane. Then re-run the following command to submit another 100 orders.
+5. Save the report, naming it **Realtime Orders**.
+6. Switch back to the browser tab containing the Azure portal, and if necessary, re-open the cloud shell pane. Then re-run the following command to submit another 100 orders.
 
     ```
     node ~/dp-000/Allfiles/Labs/22/orderclient
     ```
 
-8. While the order submission script is running, switch back to the browser tab containing the **Realtime Orders** Power BI report and refresh it; verifying that the visualization updates to reflect the new order data as it is processed by the Stream Analytics job (which should still be running).
+7. While the order submission script is running, switch back to the browser tab containing the **Realtime Orders** Power BI report and refresh it; verifying that the visualization updates to reflect the new order data as it is processed by the Stream Analytics job (which should still be running).
 
     ![A screenshot of a Power BI report showing a realtime stream of order data.](./images/powerbi-stream-report.png)
 
-9. Close the browser tab containing the Power BI report. Then return to the browser tab containing the Azure Portal, close the cloud shell pane, and use the **&#128454; Stop** button to stop the Stream Analytics job. Wait for the notification that the Stream Analytics job has stopped successfully.
+    In this exercise, you've created a simple visualization. You could create a report that includes multiple visualizations based on the data in the streaming dataset. Whenever the report is viewed, the visualizations reflect the most recently captured data.
 
-## Delete Azure resources
+## Delete resources
 
-If you've finished exploring Azure Stream Analytics, you should delete the resources you've created to avoid unnecessary Azure costs.
+If you've finished exploring Azure Stream Analytics and Power BI, you should delete the resources you've created to avoid unnecessary Azure costs.
 
-1. Close the Azure Synapse Studio browser tab and return to the Azure portal.
-2. On the Azure portal, on the **Home** page, select **Resource groups**.
+1. Close the browser tab containing the Power BI report. Then in the **Workspaces** pane, in the **&#8942;** menu for your workspace select **Workspace settings** and delete the workspace.
+2. Return to the browser tab containing the Azure Portal, close the cloud shell pane, and use the **&#128454; Stop** button to stop the Stream Analytics job. Wait for the notification that the Stream Analytics job has stopped successfully.
+3. On the Azure portal, on the **Home** page, select **Resource groups**.
 3. Select the **dp000-*xxxxxxx*** resource group containing your Azure Event Hub and Stream Analytics resources.
 4. At the top of the **Overview** page for your resource group, select **Delete resource group**.
 5. Enter the **dp000-*xxxxxxx*** resource group name to confirm you want to delete it, and select **Delete**.
