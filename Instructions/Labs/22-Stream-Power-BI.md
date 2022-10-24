@@ -179,8 +179,8 @@ If you've finished exploring Azure Stream Analytics and Power BI, you should del
 1. Close the browser tab containing the Power BI report. Then in the **Workspaces** pane, in the **&#8942;** menu for your workspace select **Workspace settings** and delete the workspace.
 2. Return to the browser tab containing the Azure Portal, close the cloud shell pane, and use the **&#128454; Stop** button to stop the Stream Analytics job. Wait for the notification that the Stream Analytics job has stopped successfully.
 3. On the Azure portal, on the **Home** page, select **Resource groups**.
-3. Select the **dp000-*xxxxxxx*** resource group containing your Azure Event Hub and Stream Analytics resources.
-4. At the top of the **Overview** page for your resource group, select **Delete resource group**.
-5. Enter the **dp000-*xxxxxxx*** resource group name to confirm you want to delete it, and select **Delete**.
+4. Select the **dp000-*xxxxxxx*** resource group containing your Azure Event Hub and Stream Analytics resources.
+5. At the top of the **Overview** page for your resource group, select **Delete resource group**.
+6. Enter the **dp000-*xxxxxxx*** resource group name to confirm you want to delete it, and select **Delete**.
 
     After a few minutes, the resources created in this exercise will be deleted.
