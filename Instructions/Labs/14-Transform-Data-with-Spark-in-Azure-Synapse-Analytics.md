@@ -6,7 +6,7 @@ lab:
 
 # Transform files using a serverless SQL pool
 
-Data *analysts* often use SQL to query data for analysis and reporting. Data *engineers* can also make use of SQL to manipulate and transform data; often as part of a data ingestion pipeline or extract, transform, and load (ETL) process.
+Data *engineers* often use Spark notebooks as one of their preferred tools to perform *extract, load, and transformation (ELT)* activities.
 
 In this lab, you'll use a serverless SQL pool in Azure Synapse Analytics to transform data in files.
 
@@ -52,11 +52,11 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
 
 8. Wait for the script to complete - this typically takes around 10 minutes, but in some cases may take longer. While you are waiting, review the [CETAS with Synapse SQL](https://docs.microsoft.com/azure/synapse-analytics/sql/develop-tables-cetas) article in the Azure Synapse Analytics documentation.
 
-## Explore the data
+## What's in the Lab
 The script provisions an Azure Synapse Analytics workspace with a Spark Pool, Built-in Serverless SQL Pool, and an Azure Storage account to host the data lake, then uploads 3 sales orders files to the data lake and a Notebook to the workspace. Let's explore and work with the data using the provided notebook by following the steps below:
 
 1. Select the Resource Groups option in the Azure Portal window  ![Azure Portal pane with resource groups highlighted for selection](./images/select-resource-groups.png)
-2. Select the resource group which begins with dp000- and has the suffix created in your script. This should still be visible in your shell window and look similar to the code snippet below:
+2. Select the resource group which begins with dp000- and has the suffix created in your script. This should still be visible in your shell window and look similar to the code output below:
    
    ```powershell
    Your randomly-generated suffix for Azure resources is xxxxxx
@@ -64,10 +64,18 @@ The script provisions an Azure Synapse Analytics workspace with a Spark Pool, Bu
 
 3. Select the Synapse-xxxxxx workspace icon within the Resource Group panel. ![Azure Portal pane select synapse workspace icon in resource group](./images/select-synapse-analytics-in-RG.png)
 4. Select the **Open Synapse Studio** under the Getting started section of the Synapse Resource panel. If this doesn't work, then you can select the link in the **Workspace web URL**. ![Azure Portal pane select synapse workspace icon in resource group](./images/open-synapse-studio-options.png)
+5. Select the Develop icon (1)  ![Azure Portal pane select develop](./images/select-develop-in-synapse-workspace.png)
+6. Or the expand icon (2) to display the **Develop** panel. ![Azure Portal pane select develop expanded](./images/select-develop-in-synapse-workspace-expanded.png)
+7. On the **Develop** panel, expand the ***Notebooks*** section and select the **Spark Transform** file. ![Azure Portal Develop.notebook.spark transform](./images/select-spark-notebook.png)
+8. Follow the directions in the Spark notebook and then return to this page.
+## Delete Azure resources
 
-### Navigate to Synapse Studio to view the raw data files loaded into the data lake. 
+If you've finished exploring Azure Synapse Analytics, you should delete the resources you've created to avoid unnecessary Azure costs.
 
-1. Open the **synapse*xxxxxxx*** Synapse workspace, and on its **Overview** page, in the **Open Synapse Studio** card, select **Open** to open Synapse Studio in a new browser tab; signing in if prompted.
-2. On the left side of Synapse Studio, use the **&rsaquo;&rsaquo;** icon to expand the menu - this reveals the different pages within Synapse Studio.
-3. On the **Manage** page, on the **SQL pools** tab, select the row for the **sql*xxxxxxx*** dedicated SQL pool and use its **&#9655;** icon to start it; confirming that you want to resume it when prompted.
-4. Wait for the SQL pool to resume. This can take a few minutes. You can use the **&#8635; Refresh** button to check its status periodically. The status will show as **Online** when it is ready.
+1. Close the Synapse Studio browser tab and return to the Azure portal.
+2. On the Azure portal, on the **Home** page, select **Resource groups**.
+3. Select the **dp000-*xxxxxxx*** resource group for your Synapse Analytics workspace (not the managed resource group), and verify that it contains the Synapse workspace, storage account, and Spark pool for your workspace.
+4. At the top of the **Overview** page for your resource group, select **Delete resource group**.
+5. Enter the **dp000-*xxxxxxx*** resource group name to confirm you want to delete it, and select **Delete**.
+
+    After a few minutes, your Azure Synapse workspace resource group and the managed workspace resource group associated with it will be deleted.
