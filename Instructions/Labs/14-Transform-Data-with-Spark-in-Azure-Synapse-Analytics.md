@@ -52,7 +52,7 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
 
 8. Wait for the script to complete - this typically takes around 10 minutes, but in some cases may take longer. While you are waiting, review the [CETAS with Synapse SQL](https://docs.microsoft.com/azure/synapse-analytics/sql/develop-tables-cetas) article in the Azure Synapse Analytics documentation.
 
-## What's in the Lab
+## Getting started
 The script provisioned an Azure Synapse Analytics workspace with a Spark Pool, Built-in Serverless SQL Pool, and an Azure Storage account to host the data lake, then uploads 3 sales orders files to the data lake and a Notebook to the workspace. Let's explore and work with the data using the provided notebook by following the steps below:
 
 1. Select the Resource Groups option in the Azure Portal window  ![Azure Portal pane with resource groups highlighted for selection](./images/select-resource-groups.png)
