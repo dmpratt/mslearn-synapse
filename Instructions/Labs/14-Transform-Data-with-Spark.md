@@ -52,22 +52,22 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
 
 8. Wait for the script to complete - this typically takes around 10 minutes, but in some cases may take longer. While you are waiting, review the [Apache Spark Pool Configurations](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-pool-configurations) article in the Azure Synapse Analytics documentation.
 
+## View and Navigate Synapse Worspace
+1. After the script has completed, in the Azure portal, go to the dp000-xxxxxxx resource group that it created, and select your Synapse workspace.
+2. In the Overview page for your Synapse Workspace, in the Open Synapse Studio card, select Open to open Synapse Studio in a new browser tab; signing in if prompted.
+3. On the left side of Synapse Studio, use the ›› icon to expand the menu - this reveals the different pages within Synapse Studio that you’ll use to manage resources and perform data analytics tasks.
+4. On the Manage page, select the Apache Spark pools tab and note that a Spark pool with a name similar to **sparkxxxxxxx** has been provisioned in the workspace.
+5. On the Data page, view the Linked tab and verify that your workspace includes a link to your Azure Data Lake Storage Gen2 storage account, which should have a name similar to **synapsexxxxxxx (Primary - datalakexxxxxxx)**.
+6. Expand your storage account and verify that it contains a file system container named **files (primary)**.
+7. Select the files container, and note that it contains folders named sales and synapse. The synapse folder is used by Azure Synapse, and the sales folder contains the data files you are going to query.
+Open the sales folder and the orders folder it contains, and observe that the orders folder contains .csv files for three years of sales data.
+***Right-click*** any of the files and select Preview to see the data it contains. Note that the files contain a header row, so you can select the option to display column headers.
+
 ## Getting started
-The script provisioned an Azure Synapse Analytics workspace with a Spark Pool, Built-in Serverless SQL Pool, and an Azure Storage account to host the data lake, then uploads 3 sales orders files to the data lake and a Notebook to the workspace. Let's explore and work with the data using the provided notebook by following the steps below:
-
-1. Select the Resource Groups option in the Azure Portal window  ![Azure Portal pane with resource groups highlighted for selection](./images/select-resource-groups.png)
-2. Select the resource group which begins with dp000- and has the suffix created in your script. This should still be visible in your shell window and look similar to the code output below:
-   
-   ```powershell
-   Your randomly-generated suffix for Azure resources is xxxxxx
-   ```
-
-3. Select the Synapse-xxxxxx workspace icon within the Resource Group panel. ![Azure Portal pane select synapse workspace icon in resource group](./images/select-synapse-analytics-in-RG.png)
-4. Select the **Open Synapse Studio** under the Getting started section of the Synapse Resource panel. If this doesn't work, then you can select the link in the **Workspace web URL**. ![Azure Portal pane select synapse workspace icon in resource group](./images/open-synapse-studio-options.png)
-5. Select the Develop icon (1)  ![Azure Portal pane select develop](./images/select-develop-in-synapse-workspace.png)
-6. Or the expand icon (2) to display the **Develop** panel. ![Azure Portal pane select develop expanded](./images/select-develop-in-synapse-workspace-expanded.png)
-7. On the **Develop** panel, expand the ***Notebooks*** section and select the **Spark Transform** file. ![Azure Portal Develop.notebook.spark transform](./images/select-spark-notebook.png)
-8. Follow the directions in the Spark notebook and then return to this page.
+1. Returning to the Synapse Workspace.
+2. Select the **Develop** panel. ![Azure Portal pane select develop expanded](./images/select-develop-in-synapse-workspace-expanded.png)
+3. On the **Develop** panel, expand the ***Notebooks*** section and select the **Spark Transform** file. ![Azure Portal Develop.notebook.spark transform](./images/select-spark-notebook.png)
+4. Follow the directions in the Spark notebook and then return to this page.
 ## Delete Azure resources
 
 If you've finished exploring Azure Synapse Analytics, you should delete the resources you've created to avoid unnecessary Azure costs.
