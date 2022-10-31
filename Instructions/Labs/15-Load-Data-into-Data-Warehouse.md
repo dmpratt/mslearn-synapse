@@ -1,16 +1,18 @@
 ---
 lab:
-    title: 'Transform data using a serverless SQL pool'
-    module: 'Use Azure Synapse serverless SQL pool to query files in a data lake'
+    title: 'Load Data into a Relational Data Warehouse'
+    module: 'Loading Azure Data Lake data into Azure Synapse Analytics'
 ---
 
-# Transform files using a serverless SQL pool
+# Load Data into a Relational Data Warehouse
 
-Data *engineers* often use Spark notebooks as one of their preferred tools to perform *extract, load, and transformation (ELT)* activities.
+Data engineers and data analysts alike have the ability to quickly analyze data stored in Azure Data Lake using a variety of techniques; however, there are times 
+when it is more effective and performant to load the data into the Azure Synapse Relational Data Warehouse to gain the performance of the Massively Parallel Performance (MPP)
+architecture which provides near-linear scalability and seamlessly connects to the Data Lake with the use of Polybase.
 
-In this lab, you'll use a serverless SQL pool in Azure Synapse Analytics to transform data in files.
+In this lab, you'll use a dedicated SQL pool in Azure Synapse Analytics to transform data in files into physical tables in Azure Synapse Analytics.
 
-This lab will take approximately **30** minutes to complete.
+This lab will take approximately **20** minutes to complete.
 
 ## Before you start
 
@@ -41,7 +43,7 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
 5. After the repo has been cloned, enter the following commands to change to the folder for this lab and run the **setup.ps1** script it contains:
 
     ```
-    cd dp-000/Allfiles/Labs/14
+    cd dp-000/Allfiles/Labs/15
     ./setup.ps1
     ```
 
@@ -62,23 +64,10 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
 7. Select the files container, and note that it contains folders named sales and synapse. The synapse folder is used by Azure Synapse, and the sales folder contains the data files you are going to query.
 Open the sales folder and the orders folder it contains, and observe that the orders folder contains .csv files for three years of sales data.
 ***Right-click*** any of the files and select Preview to see the data it contains. Note that the files contain a header row, so you can select the option to display column headers.
-8. Select the Develop Panel and expand the Notebooks section.
-9. Select your spark server and run the first code cell which will take several minutes to execute.
-10. complete the rest of the code steps in the notebook and then return to this page.
 
-</br>
-<details>
-<summary><h4>Click arrow for additional help</h4></summary>
-  <p>
-1. Returning to the Synapse Workspace.</br>
-2. Select the **Develop** panel. <img src="./images/select-develop-in-synapse-workspace-expanded.png" alt="Azure Portal pane select develop expanded" width="800" height="600"></br>
-3. On the <b>Develop</b> panel, expand the <i>Notebooks</i> section and select the <b>Spark Transform</b> file. <img src="./images/select-spark-notebook.png" alt="Azure Portal Develop.notebook.spark transform" width="800" height="600"> </br>
-4. Follow the directions in the Spark notebook and then return to this page.</br>
-</p>
-</details>
+## Add content here to create a notebook which will perform a CTAS operation using GUI.
 
 ## Delete Azure resources
-
 If you've finished exploring Azure Synapse Analytics, you should delete the resources you've created to avoid unnecessary Azure costs.
 
 1. Close the Synapse Studio browser tab and return to the Azure portal.
