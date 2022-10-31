@@ -68,7 +68,7 @@ Open the sales folder and the orders folder it contains, and observe that the or
 
 </br>
 <details>
-<summary><h4>Click arrow for additional help</h4></summary>
+<summary>Click for additional help</summary>
   <p>
 1. Returning to the Synapse Workspace.</br>
 2. Select the **Develop** panel. <img src="./images/select-develop-in-synapse-workspace-expanded.png" alt="Azure Portal pane select develop expanded" width="800" height="600"></br>
