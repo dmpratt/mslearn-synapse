@@ -1,6 +1,6 @@
 ---
 lab:
-    title: 'Transform data using a serverless SQL pool'
+    title: 'Transform data using a Spark in Synapse Analytics'
     module: 'Use Azure Synapse serverless SQL pool to query files in a data lake'
 ---
 
