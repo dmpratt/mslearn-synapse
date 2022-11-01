@@ -66,16 +66,6 @@ Open the sales folder and the orders folder it contains, and observe that the or
 9. Select your spark server and run the first code cell which will take several minutes to execute.
 10. complete the rest of the code steps in the notebook and then return to this page.
 
-</br>
-<details>
-<summary>Click for additional help</summary>
-  <p>
-1. Returning to the Synapse Workspace.</br>
-2. Select the **Develop** panel. <img src="./images/select-develop-in-synapse-workspace-expanded.png" alt="Azure Portal pane select develop expanded" width="800" height="600"></br>
-3. On the <b>Develop</b> panel, expand the <i>Notebooks</i> section and select the <b>Spark Transform</b> file. <img src="./images/select-spark-notebook.png" alt="Azure Portal Develop.notebook.spark transform" width="800" height="600"> </br>
-4. Follow the directions in the Spark notebook and then return to this page.</br>
-</p>
-</details>
 
 ## View and Work with the created parquet files 
 In the Last step of the notebook we queried the parquet files Partitioned by FiscalYear and Fiscal Month. In total, there were 30 parquet files created which represented 30 months of data from 2020 thru June of 2022. Let's explore these files a little more.
