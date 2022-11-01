@@ -1,10 +1,10 @@
 ---
 lab:
     title: 'Transform data using a Spark in Synapse Analytics'
-    module: 'Use Azure Synapse serverless SQL pool to query files in a data lake'
+    module: 'Use Azure Synapse notebooks to transform data'
 ---
 
-# Transform files using a serverless SQL pool
+# Transform data using a Spark in Synapse Analytics
 
 Data *engineers* often use Spark notebooks as one of their preferred tools to perform *extract, load, and transformation (ELT)* activities.
 
