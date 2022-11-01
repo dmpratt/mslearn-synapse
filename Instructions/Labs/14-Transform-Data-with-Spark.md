@@ -1,10 +1,10 @@
 ---
 lab:
-    title: 'Transform data using a Spark in Synapse Analytics'
+    title: 'Transform data using Spark in Synapse Analytics'
     module: 'Use Azure Synapse notebooks to transform data'
 ---
 
-# Transform data using a Spark in Synapse Analytics
+# Transform data using Spark in Synapse Analytics
 
 Data *engineers* often use Spark notebooks as one of their preferred tools to perform *extract, load, and transformation (ELT)* activities.
 
