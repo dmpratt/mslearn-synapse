@@ -352,7 +352,7 @@ Azure Synapse Data Explorer provides a runtime that you can use to store and que
 3. When the Data Explorer pool has started, view the **Data** page; and on the **Workspace** tab, expand **Data Explorer Databases** and verify that **adx*xxxxxxx*** is listed (use **&#8635;** icon at the top-left of the page to refresh the view if necessary)
 4. In the **Data** pane, use the **&#65291;** icon to create a new **Data Explorer database** in the **adx*xxxxxxx*** pool with the name **sales-data**.
 5. In Synapse Studio, wait for the database to be created (a notification will be displayed).
-6. Switch to the **Develop** page, and in the **KQL scripts** list, select **ingest-data**. When the scipt opens, note that it contains two statements:
+6. Switch to the **Develop** page, and in the **KQL scripts** list, select **ingest-data**. When the script opens, note that it contains two statements:
     - A `.create table` statement to create a table named **sales**.
     - An `.ingest into table` statement to load data into the table from an HTTP source.
 7. In the **ingest-data** pane, in the **Connect to** list, select your **adx*xxxxxxx*** pool, and in the **Database** list, select **sales-data**.
