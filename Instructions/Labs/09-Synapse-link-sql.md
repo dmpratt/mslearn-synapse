@@ -83,6 +83,7 @@ Your Azure SQL server hosts a sample database named **AdventureWorksLT**. This d
     - **Login** SQLUser
     - **Password**: *The password you specified when running the setup script.*
 3. When the query editor opens, expand the **Tables** node and view the list of tables in the database. Note that they include tables in a **SalesLT** schema (for example, **SalesLT.Customer**).
+
 ## Configure Azure Synapse Link
 
 Now you're ready to configure Azure Synapse Link for SQL in your Synapse Analytics workspace.
