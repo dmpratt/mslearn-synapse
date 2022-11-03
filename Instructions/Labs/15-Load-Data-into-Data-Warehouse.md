@@ -6,13 +6,11 @@ lab:
 
 # Load Data into a Relational Data Warehouse
 
-Data engineers and data analysts alike have the ability to quickly analyze data stored in Azure Data Lake using a variety of techniques; however, there are times 
-when it is more effective and performant to load the data into the Azure Synapse Relational Data Warehouse to gain the performance of the Massively Parallel Performance (MPP)
-architecture which provides near-linear scalability and seamlessly connects to the Data Lake with the use of Polybase.
+In this lab, we're going to load data into a dedicated SQL Pool which is a way to gain optimal performance of very large datasets and warehouses. We'll use the Create Table as SELECT (CTAS) operation and a feature developed in Synapse pre-cursor product PDW, named Polybase which acts as a federated query engine dynamically generated yet another resource negotiator (YARN) code to query the Hadoop Data file system (HDFS) layer of Azure Data Lake.
 
 In this lab, you'll use a dedicated SQL pool in Azure Synapse Analytics to transform data in files into physical tables in Azure Synapse Analytics.
 
-This lab will take approximately **20** minutes to complete.
+This lab will take approximately **30** minutes to complete.
 
 ## Before you start
 
@@ -65,7 +63,50 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
 Open the sales folder and the orders folder it contains, and observe that the orders folder contains .csv files for three years of sales data.
 ***Right-click*** any of the files and select Preview to see the data it contains. Note that the files contain a header row, so you can select the option to display column headers.
 
-## Add content here to create a notebook which will perform a CTAS operation using GUI.
+## Load data warehouse tables
+
+One of the most common patterns for loading a data warehouse is to transfer data from source systems to files in a data lake, ingest the file data into staging tables, and then use SQL statements to load the data from the staging tables into the dimension and fact tables. Usually data loading is performed as a periodic batch process in which inserts and updates to the data warehouse are coordinated to occur at a regular interval (for example, daily, weekly, or monthly).
+
+There are many technologies you can use to load data, including pipelines created using Azure Synapse Analytics or Azure Data Factory, SQL Server Integration Services packages, or command line tools like the bulk copy program (BCP). In this unit, we'll focus on SQL-based techniques to ingest data from a data lake.
+
+## Loading data into staging tables
+
+If you use external tables for staging, there's no need to load the data into them because they already reference the data files in the data lake. However, if you use "regular" relational tables, you can use the COPY statement to load data from the data lake, as shown in the following example:
+
+```SQL
+
+COPY INTO dbo.StageProducts
+    (ProductID, ProductName, ProductCategory, Color, Size, ListPrice, Discontinued)
+FROM 'https://mydatalake.blob.core.windows.net/data/stagedfiles/products/*.parquet'
+WITH
+(
+    FILE_TYPE = 'PARQUET',
+    MAXERRORS = 0,
+    IDENTITY_INSERT = 'OFF'
+);
+```
+## Loading staged data into dimension tables
+
+If you use external tables for staging, there's no need to load the data into them because they already reference the data files in the data lake. However, if you use "regular" relational tables, you can use the COPY statement to load data from the data lake, as shown in the following example:
+
+```sql
+
+COPY INTO dbo.StageProducts
+    (ProductID, ProductName, ProductCategory, Color, Size, ListPrice, Discontinued)
+FROM 'https://mydatalake.blob.core.windows.net/data/stagedfiles/products/*.parquet'
+WITH
+(
+    FILE_TYPE = 'PARQUET',
+    MAXERRORS = 0,
+    IDENTITY_INSERT = 'OFF'
+);
+```
+
+## Loading staged data into dimension tables
+ ![NOTE https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-develop-ctas]
+
+## Using a CREATE TABLE AS (CTAS) statement
+
 
 ## Delete Azure resources
 If you've finished exploring Azure Synapse Analytics, you should delete the resources you've created to avoid unnecessary Azure costs.
