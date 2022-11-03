@@ -60,7 +60,7 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
 5. On the Data page, view the Linked tab and verify that your workspace includes a link to your Azure Data Lake Storage Gen2 storage account, which should have a name similar to **synapsexxxxxxx (Primary - datalakexxxxxxx)**.
 6. Expand your storage account and verify that it contains a file system container named **files (primary)**.
 7. Select the files container, and note that it contains folders named sales and synapse. The synapse folder is used by Azure Synapse, and the sales folder contains the data files you are going to query.
-Open the sales folder and the orders folder it contains, and observe that the orders folder contains .csv files for three years of sales data.
+Open the sales folder and the orders folder it contains, and observe that the orders folder contains .csv files for Customer, Product, and Internet Sales data.
 ***Right-click*** any of the files and select Preview to see the data it contains. Note that the files contain a header row, so you can select the option to display column headers.
 
 ## Load data warehouse tables
