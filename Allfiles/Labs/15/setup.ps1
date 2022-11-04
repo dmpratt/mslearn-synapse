@@ -162,6 +162,15 @@ New-AzRoleAssignment -SignInName $userName -RoleDefinitionName "Storage Blob Dat
 write-host "Creating the $sqlDatabaseName database..."
 sqlcmd -S "$synapseWorkspace.sql.azuresynapse.net" -U $sqlUser -P $sqlPassword -d $sqlDatabaseName -I -i setup.sql
 
+# Load data
+write-host "Loading data..."
+Get-ChildItem "./data/*.txt" -File | Foreach-Object {
+    write-host ""
+    $file = $_.FullName
+    Write-Host "$file"
+    $table = $_.Name.Replace(".txt","")
+    bcp dbo.$table in $file -S "$synapseWorkspace.sql.azuresynapse.net" -U $sqlUser -P $sqlPassword -d $sqlDatabaseName -f $file.Replace("txt", "fmt") -q -k -E -b 5000
+}
 # Upload files
 write-host "Uploading files..."
 $storageAccount = Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $dataLakeAccountName
@@ -172,16 +181,6 @@ Get-ChildItem "./data/*.csv" -File | Foreach-Object {
     Write-Host $file
     $blobPath = "data/$file"
     Set-AzStorageBlobContent -File $_.FullName -Container "files" -Blob $blobPath -Context $storageContext
-}
-
-# Load data
-write-host "Loading data..."
-Get-ChildItem "./data/*.txt" -File | Foreach-Object {
-    write-host ""
-    $file = $_.FullName
-    Write-Host "$file"
-    $table = $_.Name.Replace(".txt","")
-    bcp dbo.$table in $file -S "$synapseWorkspace.sql.azuresynapse.net" -U $sqlUser -P $sqlPassword -d $sqlDatabaseName -f $file.Replace("txt", "fmt") -q -k -E -b 5000
 }
 
 # Pause SQL Pool
