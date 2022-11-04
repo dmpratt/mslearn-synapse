@@ -170,6 +170,7 @@ Get-ChildItem "./data/*.csv" -File | Foreach-Object {
     Write-Host $file
     $blobPath = "data/$file"
     Set-AzStorageBlobContent -File $_.FullName -Container "files" -Blob $blobPath -Context $storageContext
+}
 
 # Load data
 write-host "Loading data..."
@@ -180,7 +181,13 @@ Get-ChildItem "./data/*.txt" -File | Foreach-Object {
     $table = $_.Name.Replace(".txt","")
     bcp dbo.$table in $file -S "$synapseWorkspace.sql.azuresynapse.net" -U $sqlUser -P $sqlPassword -d $sqlDatabaseName -f $file.Replace("txt", "fmt") -q -k -E -b 5000
 }
-}
+
+# Pause SQL Pool
+write-host "Pausing the $sqlDatabaseName SQL Pool..."
+Suspend-AzSynapseSqlPool -WorkspaceName $synapseWorkspace -Name $sqlDatabaseName -AsJob
+
+
+
 
 
 write-host "Script completed at $(Get-Date)"
