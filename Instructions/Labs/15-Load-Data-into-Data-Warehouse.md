@@ -113,6 +113,34 @@ FROM dbo.StageProduct;
 
 ## Using a CREATE TABLE AS (CTAS) statement
 
+## Using a CREATE EXTERNAL TABLE AS SELECT (CETAS)
+```sql
+
+CREATE EXTERNAL TABLE hdfsCustomer  
+WITH (  
+    LOCATION='/Data/customer.tbl',  
+	DATA_SOURCE = MyDataSource,
+	FILE_FORMAT = MyParquet
+) AS SELECT * FROM dimCustomer;  
+
+select top 100 * from hdfsCustomer
+
+-- Create the parquet format with a Gzip Codec
+CREATE EXTERNAL FILE FORMAT MyParquet  
+WITH (  
+    FORMAT_TYPE = PARQUET  
+    , DATA_COMPRESSION = 'org.apache.hadoop.io.compress.GzipCodec'  
+	);  
+
+-- Create the external datasource (changing the suffix to match yours
+IF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'MyDataSource') 
+	CREATE EXTERNAL DATA SOURCE [MyDataSource] 
+	WITH (
+		LOCATION = 'abfss://files@datalakerpqavis.dfs.core.windows.net', 
+		TYPE = HADOOP 
+	)
+
+```
 
 ## Delete Azure resources
 If you've finished exploring Azure Synapse Analytics, you should delete the resources you've created to avoid unnecessary Azure costs.
