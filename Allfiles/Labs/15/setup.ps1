@@ -140,13 +140,13 @@ write-host "Creating $synapseWorkspace Synapse Analytics workspace in $resourceG
 New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName `
   -TemplateFile "setup.json" `
   -Mode Complete `
+  -uniqueSuffix $suffix `
   -workspaceName $synapseWorkspace `
   -dataLakeAccountName $dataLakeAccountName `
   -sparkPoolName $sparkPool `
   -sqlDatabaseName $sqlDatabaseName `
   -sqlUser $sqlUser `
   -sqlPassword $sqlPassword `
-  -uniqueSuffix $suffix `
   -Force
 
 # Make the current user and the Synapse service principal owners of the data lake blob store
