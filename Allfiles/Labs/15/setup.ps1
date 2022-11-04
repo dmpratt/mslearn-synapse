@@ -142,6 +142,7 @@ New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName `
   -workspaceName $synapseWorkspace `
   -dataLakeAccountName $dataLakeAccountName `
   -sparkPoolName $sparkPool `
+  -sqlDatabaseName $sqlDatabaseName `
   -sqlUser $sqlUser `
   -sqlPassword $sqlPassword `
   -uniqueSuffix $suffix `
@@ -185,9 +186,5 @@ Get-ChildItem "./data/*.txt" -File | Foreach-Object {
 # Pause SQL Pool
 write-host "Pausing the $sqlDatabaseName SQL Pool..."
 Suspend-AzSynapseSqlPool -WorkspaceName $synapseWorkspace -Name $sqlDatabaseName -AsJob
-
-
-
-
 
 write-host "Script completed at $(Get-Date)"
