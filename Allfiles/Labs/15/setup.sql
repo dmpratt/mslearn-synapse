@@ -381,7 +381,7 @@ CREATE TABLE [dbo].[DimReseller](
 	[YearOpened] [int] NULL)
 GO
 
- CREATE TABLE [dbo].[StageProducts]
+ CREATE TABLE [dbo].[StageProduct]
 (
     ProductID int NOT NULL,
 	ProductAlternateKey NVARCHAR(30), NULL,
