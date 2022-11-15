@@ -31,7 +31,7 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
 
 3. Note that the Cloud Shell can be resized by dragging the separator bar at the top of the pane, or by using the **&#8212;**, **&#9723;**, and **X** icons at the top right of the pane to minimize, maximize, and close the pane. For more information about using the Azure Cloud Shell, see the [Azure Cloud Shell documentation](https://docs.microsoft.com/azure/cloud-shell/overview).
 
-4. In the PowerShell pane, enter the following commands to clone this repo:
+4. In the PowerShell pane, enter the following commands to clone this repository:
 
     ```powershell
     rm -r dp-000 -f
@@ -68,16 +68,26 @@ One of the most common patterns for loading a data warehouse is to transfer data
 
 There are many technologies you can use to load data, including pipelines created using Azure Synapse Analytics or Azure Data Factory, SQL Server Integration Services packages, or command line tools like the bulk copy program (BCP). In this unit, we'll focus on SQL-based techniques to ingest data from a data lake.
 
+1. Select the  **Data** panel.
+2. Within this panel, select the **workspace** tab.
+3. Expand the ***SQL Database*** 
+4. On the database created with your **sqlxxxxxxx** suffix mouse-over the the right-hand side of the blade until the elipses appears and left-click.
+5. Select ***New SQL Script***.
+6. Select ***Empty Script***.
+
+    ![Select empty sql script](./images/select-empty-sql-script.png)
+
+You now have a blank SQL page which is connected to the instance for the following exercises.
 ## Loading data into staging tables
 
 If you use external tables for staging, there's no need to load the data into them because they already reference the data files in the data lake. However, if you use "regular" relational tables, you can use the COPY statement to load data from the data lake, as shown in the following example:
 
->**NOTE**: Change the ***mydatalake*** with the name of your datalake name created during the beginning of the lab
+>**NOTE**: Change the ***datalakexxxxxx*** with the name of your datalake name created during the beginning of the lab
 
 ```sql
 COPY INTO dbo.StageProduct
     (ProductID, ProductAlternateKey, ProductName, ProductCategory, Color, Size, ListPrice, Discontinued)
-FROM 'https://mydatalake.blob.core.windows.net/files/data/StageProducts.csv'
+FROM 'https://datalakexxxxxx.blob.core.windows.net/files/data/StageProduct.csv'
 WITH
 (
     FILE_TYPE = 'CSV',
@@ -89,7 +99,7 @@ WITH
 
 ## Using a CREATE TABLE AS (CTAS) statement
 
-> ***NOTE*** For more Information, see [CREATE TABLE AS SELECT (CTAS)](https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-develop-ctas) in the Azure Synapse Analytics documention.
+> ***NOTE*** For more Information, see [CREATE TABLE AS SELECT (CTAS)](https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-develop-ctas) in the Azure Synapse Analytics documentation.
 
 For example, the following code creates a new DimProduct table based on the results of a query that retrieves data from the StageProduct table:
 
