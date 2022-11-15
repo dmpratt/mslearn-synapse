@@ -383,10 +383,10 @@ GO
 
  CREATE TABLE [dbo].[StageProduct]
 (
-    ProductID int NOT NULL,
-	ProductAlternateKey NVARCHAR(30), NULL,
-    [ProductName] NVARCHAR(50) NULL,
-    [ProductCategory] NVARCHAR(24) NULL,
+    ProductID [int] NOT NULL,
+	ProductAlternateKey [NVARCHAR](30), NULL,
+    [ProductName] [NVARCHAR](50) NULL,
+    [ProductCategory] [NVARCHAR](24) NULL,
     [Color] [nvarchar](30) NOT NULL,
     [Size] [nvarchar](50) NULL,
     [ListPrice] [money] NULL,
