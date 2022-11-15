@@ -130,6 +130,7 @@ For example, if you have an orders table distributed by order_id, and a transact
 
 The CTAS operation will allow us to use the round-robin table type for loading in those cases and then create a distributed table once the data is understood within the warehouse.
 
+>**NOTE**: Change the ***datalakexxxxxx*** with the name of your datalake name created during the beginning of the lab
 ## Using a CREATE EXTERNAL TABLE AS SELECT (CETAS)
 
 ```sql
@@ -137,7 +138,7 @@ The CTAS operation will allow us to use the round-robin table type for loading i
 IF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'MyDataSource') 
  CREATE EXTERNAL DATA SOURCE [MyDataSource] 
  WITH (
-  LOCATION = 'abfss://files@datalakerpqavis.dfs.core.windows.net', 
+  LOCATION = 'abfss://files@<datalakexxxxxxx>.dfs.core.windows.net', 
   TYPE = HADOOP 
  )
 
