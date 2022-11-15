@@ -99,6 +99,22 @@ CREATE TABLE [dbo].[DimGeography](
 	[IpAddressLocator] [nvarchar](15) NULL)
 
 GO
+
+ CREATE TABLE [dbo].[StageProduct](
+    [ProductID] [int] NULL,
+	[ProductAlternateKey] [nvarchar](30), NULL,
+    [ProductName] [nvarchar](50) NULL,
+    [ProductCategory] [nvarchar](24) NULL,
+    [Color] [nvarchar](30) NOT NULL,
+    [Size] [nvarchar](50) NULL,
+    [ListPrice] [money] NULL,
+    [Discontinued] [nvarchar](30) NULL)
+WITH
+(
+	CLUSTERED INDEX (ProductID)
+)
+GO
+
 CREATE TABLE [dbo].[DimProduct](
 	[ProductKey] [int] IDENTITY(1,1) NOT NULL,
 	[ProductAlternateKey] [nvarchar](25) NULL,
@@ -381,19 +397,5 @@ CREATE TABLE [dbo].[DimReseller](
 	[YearOpened] [int] NULL)
 GO
 
- CREATE TABLE [dbo].[StageProduct](
-    [ProductID] [int] NOT NULL,
-	[ProductAlternateKey] [nvarchar](30), NULL,
-    [ProductName] [nvarchar](50) NULL,
-    [ProductCategory] [nvarchar](24) NULL,
-    [Color] [nvarchar](30) NOT NULL,
-    [Size] [nvarchar](50) NULL,
-    [ListPrice] [money] NULL,
-    [Discontinued] [nvarchar](30) NULL)
-WITH
-(
-	CLUSTERED INDEX (ProductID)
-);
-GO
 
 
