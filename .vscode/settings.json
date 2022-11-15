@@ -1,16 +1,24 @@
 {
     "cSpell.words": [
+        "abfss",
         "Allfiles",
         "CETAS",
+        "COLUMNSTORE",
         "datalake",
         "datalakexxxxxxx",
+        "datasource",
         "dataverse",
         "Dataverse",
         "EAUP",
         "EXTERAL",
+        "hdfs",
+        "HDFS",
+        "MAXERRORS",
         "OPENROWSET",
         "Polybase",
         "productsales",
+        "synapsexxxxxxx",
+        "Worspace",
         "yearlysales"
     ]
 }

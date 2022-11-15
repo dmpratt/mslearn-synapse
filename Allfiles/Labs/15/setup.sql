@@ -381,5 +381,22 @@ CREATE TABLE [dbo].[DimReseller](
 	[YearOpened] [int] NULL)
 GO
 
+ CREATE TABLE [dbo].[StageProducts]
+(
+    ProductID int NOT NULL,
+	ProductAlternateKey NVARCHAR(30), NULL,
+    [ProductName] NVARCHAR(50) NULL,
+    [ProductCategory] NVARCHAR(24) NULL,
+    [Color] [nvarchar](30) NOT NULL,
+    [Size] [nvarchar](50) NULL,
+    [ListPrice] [money] NULL,
+    [Discontinued] [nvarchar](30) NULL
+)
+WITH
+(
+    DISTRIBUTION = HASH (ProductID),
+    CLUSTERED COLUMNSTORE INDEX
+)
+GO
 
 
