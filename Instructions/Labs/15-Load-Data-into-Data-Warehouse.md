@@ -130,7 +130,7 @@ For example, if you have an orders table distributed by order_id, and a transact
 
 The CTAS operation will allow us to use the round-robin table type for loading in those cases and then create a distributed table once the data is understood within the warehouse.
 
->**NOTE**: Change the ***datalakexxxxxx*** with the name of your datalake name created during the beginning of the lab
+>**NOTE**: Change the ***datalakexxxxxx*** with the name of your datalake name created during the beginning of the lab. If you execute this script prior to changing it you will have to drop and recreate the EXTERNAL DATA SOURCE.
 ## Using a CREATE EXTERNAL TABLE AS SELECT (CETAS)
 
 ```sql
