@@ -152,7 +152,7 @@ WITH (
 -- Create the external table
 CREATE EXTERNAL TABLE hdfsCustomer  
 WITH (  
-    LOCATION='/Data/customer.tbl',  
+    LOCATION='/edata/customer.tbl',  
  DATA_SOURCE = MyDataSource, --The Data Source created above
  FILE_FORMAT = MyParquet --The File Format created above
 ) AS SELECT * FROM dimCustomer;  
