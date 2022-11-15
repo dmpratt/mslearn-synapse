@@ -392,8 +392,7 @@ GO
     [Discontinued] [nvarchar](30) NULL)
 WITH
 (
-    DISTRIBUTION = HASH (ProductID),
-    CLUSTERED COLUMNSTORE INDEX
+	CLUSTERED INDEX (ProductID)
 );
 GO
 
