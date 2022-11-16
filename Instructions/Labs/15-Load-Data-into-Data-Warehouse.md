@@ -29,7 +29,7 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
 
     > **Note**: If you have previously created a cloud shell that uses a *Bash* environment, use the the drop-down menu at the top left of the cloud shell pane to change it to ***PowerShell***.
 
-3. Note that the Cloud Shell can be resized by dragging the separator bar at the top of the pane, or by using the **&#8212;**, **&#9723;**, and **X** icons at the top right of the pane to minimize, maximize, and close the pane. For more information about using the Azure Cloud Shell, see the [Azure Cloud Shell documentation](https://docs.microsoft.com/azure/cloud-shell/overview).
+3. Note that Cloud Shell can be resized by dragging the separator bar at the top of the pane, or by using the—, **&#9723;**, and **X** icons at the top right of the pane to minimize, maximize, and close the pane. For more information about using the Azure Cloud Shell, see the [Azure Cloud Shell documentation](https://docs.microsoft.com/azure/cloud-shell/overview).
 
 4. In the PowerShell pane, enter the following commands to clone this repository:
 
@@ -38,7 +38,7 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
     git clone https://github.com/MicrosoftLearning/mslearn-synapse dp-000
     ```
 
-5. After the repository has been cloned, enter the following commands to change to the folder for this lab and run the **setup.ps1** script it contains:
+5. After the repository has been cloned, enter the following commands to change to the folder for this lab, and run the **setup.ps1** script it contains:
 
     ```powershell
     cd dp-000/Allfiles/Labs/15
@@ -50,17 +50,18 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
 
     > **Note**: Be sure to remember this password!
 
-8. Wait for the script to complete - this typically takes around 10 minutes, but in some cases may take longer. While you are waiting, review the [Apache Spark Pool Configurations](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-pool-configurations) article in the Azure Synapse Analytics documentation.
+8. Wait for the script to complete - this typically takes around 10 minutes, but in some cases may take longer. While you're waiting, review the [Apache Spark Pool Configurations](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-pool-configurations) article in the Azure Synapse Analytics documentation.
 
-## View and Navigate Synapse Worspace
+## View and Navigate Synapse Workspace
+
 1. After the script has completed, in the Azure portal, go to the dp000-xxxxxxx resource group that it created, and select your Synapse workspace.
 2. In the Overview page for your Synapse Workspace, in the Open Synapse Studio card, select Open to open Synapse Studio in a new browser tab; signing in if prompted.
 3. On the left side of Synapse Studio, use the ›› icon to expand the menu - this reveals the different pages within Synapse Studio that you’ll use to manage resources and perform data analytics tasks.
 4. On the Data page, view the Linked tab and verify that your workspace includes a link to your Azure Data Lake Storage Gen2 storage account, which should have a name similar to **synapsexxxxxxx (Primary - datalakexxxxxxx)**.
 5. Expand your storage account and verify that it contains a file system container named **files (primary)**.
-6. Select the files container, and note that it contains folders named data and synapse. The synapse folder is used by Azure Synapse, and the data folder contains the data files you are going to query.
+6. Select the files container, and note that it contains folders named data and synapse. The synapse folder is used by Azure Synapse, and the data folder contains the data files you're going to query.
 Open the sales folder and the orders folder it contains, and observe that the orders folder contains .csv files for dimCustomer, dimDate, dimProduct, and FactInternetSales data.
-***Right-click*** any of the files and select Preview to see the data it contains. Note that the files contain a header row, so you can select the option to display column headers.
+***Right-click*** any of the files and select Preview to see the data it contains. Note the files contain a header row, so you can select the option to display column headers.
 
 ## Load data warehouse tables
 
@@ -70,14 +71,14 @@ There are many technologies you can use to load data, including pipelines create
 
 1. Select the  **Data** panel.
 2. Within this panel, select the **workspace** tab.
-3. Expand the ***SQL Database*** 
-4. On the database created with your **sqlxxxxxxx** suffix mouse-over the the right-hand side of the blade until the elipses appears and left-click.
+3. Expand the ***SQL Database***
+4. On the database created with your **sqlxxxxxxx** suffix mouse-over the right-hand side of the panel until the ellipses appears, then left-click.
 5. Select ***New SQL Script***.
 6. Select ***Empty Script***.
 
     ![Select empty sql script](./images/select-empty-sql-script.png)
 
-You now have a blank SQL page which is connected to the instance for the following exercises.
+You now have a blank SQL page, which is connected to the instance for the following exercises.
 ## Loading data into staging tables
 
 If you use external tables for staging, there's no need to load the data into them because they already reference the data files in the data lake. However, if you use "regular" relational tables, you can use the COPY statement to load data from the data lake, as shown in the following example:
@@ -91,17 +92,44 @@ FROM 'https://datalakexxxxxx.blob.core.windows.net/files/data/StageProduct.csv'
 WITH
 (
     FILE_TYPE = 'CSV',
-    MAXERRORS = 0
+    MAXERRORS = 0,
     IDENTITY_INSERT = 'OFF',
-    FIRSTROW = 2
+    FIRSTROW = 2 --Defines where the first data row starts
 );
 ```
+
+Let's also bring in another table, which will be used for later using the same method.
+>**NOTE**: Don't forget to change the ***datalakexxxxxx*** with the name of your datalake name in both the ```FROM``` and the ```ERRORFILE``` elements below.
+
+```sql
+COPY INTO dbo.StageCustomers
+(CustomerKey 1, GeographyKey 2, CustomerAlternateKey 3, Title 4, FirstName 5, MiddleName 6, LastName 7, NameStyle 8, BirthDate 9, MaritalStatus 10, Suffix 11, Gender 12, EmailAddress 13, YearlyIncome 14, TotalChildren 15, NumberChildrenAtHome 16, EnglishEducation 17, SpanishEducation 18, FrenchEducation 19, EnglishOccupation 20, SpanishOccupation 21, FrenchOccupation 22, HouseOwnerFlag 23, NumberCarsOwned 24, AddressLine1 25, AddressLine2 26, Phone 27, DateFirstPurchase 28, CommuteDistance 29)
+FROM 'https://datalakexxxxxx.dfs.core.windows.net/files/data/StageCustomers.csv'
+WITH
+(
+ FILE_TYPE = 'CSV'
+ ,MAXERRORS = 0
+ ,FIRSTROW = 2 --Defines where the first data row starts
+ ,ERRORFILE = 'https://datalakexxxxxx.dfs.core.windows.net/files/'
+)
+--END
+GO
+```
+
+## Loading staged data into dimension tables
+
+Once you've staged and verified the data you can use it to look for changes between the existing and new data (Deltas), perform lookups to detect changes in dimensions, or load it into the dimension tables using SQL.
 
 ## Using a CREATE TABLE AS (CTAS) statement
 
 > ***NOTE*** For more Information, see [CREATE TABLE AS SELECT (CTAS)](https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-develop-ctas) in the Azure Synapse Analytics documentation.
 
-For example, the following code creates a new DimProduct table based on the results of a query that retrieves data from the StageProduct table:
+The CREATE TABLE AS SELECT (CTAS) expression has various uses, which include:
+    1. redistributing the hash key of a table to align with other tables for better query performance.
+    2. assigning a surrogate key to a staging table based upon existing values after performing a delta analysis.
+    3. creating aggregate tables quickly for report purposes.
+
+The statement allows for creating a new table with the results of a SELECT statement.
 
 ```sql
 CREATE TABLE dbo.DimProduct
@@ -126,7 +154,7 @@ By default, tables are Round Robin distributed. This default makes it easy for u
 
 The most common example of a table distributed by a column outperforming a round robin table is when two large fact tables are joined.
 
-For example, if you have an orders table distributed by order_id, and a transactions table also distributed by order_id, when you join your orders table to your transactions table on order_id, this query becomes a pass-through query. Data movement operations are then eliminated. Fewer steps mean a faster query. Less data movement also makes for faster queries.
+For example, if you have an orders table distributed by order_id, and a transactions table also distributed by order_id. When you join your orders table to your transactions table on order_id, this query becomes a pass-through query. Data movement operations are then eliminated. Fewer steps mean a faster query. Less data movement also makes for faster queries.
 
 The CTAS operation will allow us to use the round-robin table type for loading in those cases and then create a distributed table once the data is understood within the warehouse.
 
@@ -138,7 +166,7 @@ The CTAS operation will allow us to use the round-robin table type for loading i
 IF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'MyDataSource') 
  CREATE EXTERNAL DATA SOURCE [MyDataSource] 
  WITH (
-  LOCATION = 'abfss://files@<datalakexxxxxxx>.dfs.core.windows.net', 
+  LOCATION = 'abfss://files@datalakexxxxxxx.dfs.core.windows.net', 
   TYPE = HADOOP 
  )
 
@@ -160,6 +188,90 @@ WITH (
 select top 100 * from hdfsCustomer
 ```
 
+## Updating Dimension tables
+
+There are multiple kinds of slowly changing dimension, of which three are commonly implemented:
+
+* Type 0: Dimension data can't be changed. Any attempted changes fail.
+* Type 1: A change made to an existing dimension row applies to all previously loaded facts related to the dimension.
+* Type 2: A change to a dimension results in a new dimension row. Existing rows for previous versions of the dimension are retained for historical fact analysis and the new row is applied to future fact table entries.
+  
+Let's take a look at an example of a Type 1 change. Suppose a store changes its name from "High Street Store" to "Town Center Store". In this case, the change should be reflected for all new sales and also all existing historical sales - so any queries that aggregate sales by store name should include all previous sales in the total for the store, regardless of the name change. To handle this change, the load process must identify the existence of any current rows for the affected store in the dimension table based on the alternate key, and update them to change the store name.
+
+Now let's consider an example of a Type 2 change. Suppose a customer changes their address because they move to a new city. In this case, you would want all existing historical sales to still be counted under the city where the customer lived when the sale was made, and all future sales after they moved to be counted under their new city. To handle this change, the load process must create a new row for the customer with a new surrogate key (but the same alternate key) to reflect the new address. Optionally, the table could include a Boolean column to indicate which record for this alternate key is the currently active record, or a DateTime column to indicate the point in time from which the new record applies (otherwise you can rely on an incrementing surrogate key and use the MAX function to find the most recently inserted row for a given alternate key.).
+
+Logic to implement Type 1 and Type 2 updates can be complex, and there are various techniques you can use. For example, you could use a combination of UPDATE and INSERT statements as shown in the following code example:
+
+```sql
+-- Insert new customers noting the schemas of the tables are identical
+SET IDENTITY_INSERT dbo.DimCustomer ON
+
+INSERT INTO dbo.DimCustomer ([CustomerKey],[GeographyKey],[CustomerAlternateKey],[Title],[FirstName],[MiddleName],[LastName],[NameStyle],[BirthDate],[MaritalStatus],
+[Suffix],[Gender],[EmailAddress],[YearlyIncome],[TotalChildren],[NumberChildrenAtHome],[EnglishEducation],[SpanishEducation],[FrenchEducation],
+[EnglishOccupation],[SpanishOccupation],[FrenchOccupation],[HouseOwnerFlag],[NumberCarsOwned],[AddressLine1],[AddressLine2],[Phone],
+[DateFirstPurchase],[CommuteDistance])
+SELECT *
+FROM dbo.StageCustomers AS stg
+WHERE NOT EXISTS
+    (SELECT * FROM dbo.DimCustomer AS dim
+     WHERE dim.CustomerKey = stg.CustomerKey);
+
+SET IDENTITY_INSERT dbo.DimCustomer OFF
+
+--Look for type 1 updates in our staging file
+SELECT dim.LastName, stg.LastName, dim.EmailAddress, stg.EmailAddress, dim.Phone, stg.Phone
+FROM DimCustomer dim inner join StageCustomers stg
+ON dim.CustomerKey = stg.CustomerKey
+WHERE dim.LastName <> stg.LastName OR dim.EmailAddress <> stg.EmailAddress OR dim.Phone <> stg.Phone
+
+-- Type 1 updates (name, email, phone)
+UPDATE dbo.DimCustomer
+SET dim.LastName = stg.LastName,
+    dim.EmailAddress = stg.EmailAddress,
+    dim.Phone = stg.Phone
+FROM DimCustomer dim inner join StageCustomers stg
+ON dim.CustomerKey = stg.CustomerKey
+WHERE dim.LastName <> stg.LastName OR dim.EmailAddress <> stg.EmailAddress OR dim.Phone <> stg.Phone
+
+-- Type 2 updates (geographic address)
+INSERT INTO dbo.DimCustomer
+SELECT stg.GeographyKey,stg.CustomerAlternateKey,stg.Title,stg.FirstName,stg.MiddleName,stg.LastName,stg.NameStyle,stg.BirthDate,stg.MaritalStatus,
+stg.Suffix,stg.Gender,stg.EmailAddress,stg.YearlyIncome,stg.TotalChildren,stg.NumberChildrenAtHome,stg.EnglishEducation,stg.SpanishEducation,stg.FrenchEducation,
+stg.EnglishOccupation,stg.SpanishOccupation,stg.FrenchOccupation,stg.HouseOwnerFlag,stg.NumberCarsOwned,stg.AddressLine1,stg.AddressLine2,stg.Phone,
+stg.DateFirstPurchase,stg.CommuteDistance
+FROM dbo.StageCustomers AS stg
+JOIN dbo.DimCustomer AS dim
+ON stg.CustomerKey = dim.CustomerKey
+WHERE stg.AddressLine1 <> dim.AddressLine1 OR stg.AddressLine2 <> dim.AddressLine2;
+```
+
+>**NOTE** In the previous example, it is assumed that an incrementing surrogate key based on an ```IDENTITY``` column identifies each row, and that the highest value surrogate key for a given alternate key indicates the most recent or "current" instance of the dimension entity associated with that alternate key. In practice, many data warehouse designers include a Boolean column to indicate the current active instance of a changing dimension or use DateTime fields to indicate the active time periods for each version of the dimension instance. With these approaches, the logic for a type 2 change must include an ```INSERT``` of the new dimension row and an ```UPDATE```to mark the current row as inactive
+
+As an alternative to using multiple ```INSERT``` and ```UPDATE``` statement, you can use a single ```MERGE``` statement to perform an "UPSERT" operation to insert new records and update existing ones, as shown in the following example, which loads new product records and applies type 1 updates to existing products:
+
+```sql
+MERGE dbo.DimProduct AS tgt
+    USING (SELECT * FROM dbo.StageProducts) AS src
+    ON src.ProductID = tgt.ProductBusinessKey
+WHEN MATCHED THEN
+    UPDATE SET
+        tgt.ProductName = src.ProductName,
+        tgt.ProductCategory = src.ProductCategory
+        tgt.Color = src.Color,
+        tgt.Size = src.Size,
+        tgt.ListPrice = src.ListPrice,
+        tgt.Discontinued = src.Discontinued
+WHEN NOT MATCHED THEN
+    INSERT VALUES
+        (src.ProductID,
+         src.ProductName,
+         src.ProductCategory,
+         src.Color,
+         src.Size,
+         src.ListPrice,
+         src.Discontinued);
+```
+
 ## Optimize Load Performance
 
 After loading new data into the data warehouse, it's a good idea to rebuild the table columnstore indexes and update statistics on commonly queried columns.
@@ -177,7 +289,7 @@ CREATE STATISTICS productcategory_stats
 ON dbo.DimProduct (ProductCategory);
 ```
 
->***NOTE*** For more information, see the [Indexes on dedicated SQL pool tables in Azure Synapse Analytics](https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-tables-index) and [Table statistics for dedicated SQL pool in Azure Synapse Analytics articles](https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-tables-statistics) in the Azure Synapse Analytics documentation.
+>**NOTE** For more information, see the [Indexes on dedicated SQL pool tables in Azure Synapse Analytics](https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-tables-index) and [Table statistics for dedicated SQL pool in Azure Synapse Analytics articles](https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-tables-statistics) in the Azure Synapse Analytics documentation.
 
 ## Delete Azure resources
 
