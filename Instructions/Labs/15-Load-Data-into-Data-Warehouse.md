@@ -103,14 +103,17 @@ Let's also bring in another table, which will be used for later using the same m
 
 ```sql
 COPY INTO dbo.StageCustomers
-(CustomerKey 1, GeographyKey 2, CustomerAlternateKey 3, Title 4, FirstName 5, MiddleName 6, LastName 7, NameStyle 8, BirthDate 9, MaritalStatus 10, Suffix 11, Gender 12, EmailAddress 13, YearlyIncome 14, TotalChildren 15, NumberChildrenAtHome 16, EnglishEducation 17, SpanishEducation 18, FrenchEducation 19, EnglishOccupation 20, SpanishOccupation 21, FrenchOccupation 22, HouseOwnerFlag 23, NumberCarsOwned 24, AddressLine1 25, AddressLine2 26, Phone 27, DateFirstPurchase 28, CommuteDistance 29)
-FROM 'https://datalakexxxxxx.dfs.core.windows.net/files/data/StageCustomers.csv'
+(CustomerKey, GeographyKey, CustomerAlternateKey, Title, FirstName, MiddleName, LastName, NameStyle, BirthDate, 
+MaritalStatus, Suffix, Gender, EmailAddress, YearlyIncome, TotalChildren, NumberChildrenAtHome, EnglishEducation, 
+SpanishEducation, FrenchEducation, EnglishOccupation, SpanishOccupation, FrenchOccupation, HouseOwnerFlag, 
+NumberCarsOwned, AddressLine1, AddressLine2, Phone, DateFirstPurchase, CommuteDistance)
+FROM 'https://datalakemrq3yz8.dfs.core.windows.net/files/data/StageCustomers.csv'
 WITH
 (
  FILE_TYPE = 'CSV'
  ,MAXERRORS = 0
  ,FIRSTROW = 2 --Defines where the first data row starts
- ,ERRORFILE = 'https://datalakexxxxxx.dfs.core.windows.net/files/'
+ ,ERRORFILE = 'https://datalakemrq3yz8.dfs.core.windows.net/files/'
 )
 --END
 GO
