@@ -63,6 +63,14 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
 Open the sales folder and the orders folder it contains, and observe that the orders folder contains .csv files for dimCustomer, dimDate, dimProduct, and FactInternetSales data.
 ***Right-click*** any of the files and select Preview to see the data it contains. Note the files contain a header row, so you can select the option to display column headers.
 
+### Start the dedicated SQL pool
+
+1. In the Azure portal, close the query editor for your Azure SQL database (discarding any changes) and return to the page for your **dp000-*xxxxxxx*** resource group.
+2. Open the **synapse*xxxxxxx*** Synapse workspace, and on its **Overview** page, in the **Open Synapse Studio** card, select **Open** to open Synapse Studio in a new browser tab; signing in if prompted.
+3. On the left side of Synapse Studio, use the **&rsaquo;&rsaquo;** icon to expand the menu - this reveals the different pages within Synapse Studio.
+4. On the **Manage** page, on the **SQL pools** tab, select the row for the **sql*xxxxxxx*** dedicated SQL pool and use its **&#9655;** icon to start it; confirming that you want to resume it when prompted.
+5. Wait for the SQL pool to resume. This can take a few minutes. You can use the **&#8635; Refresh** button to check its status periodically. The status will show as **Online** when it is ready.
+
 ## Load data warehouse tables
 
 One of the most common patterns for loading a data warehouse is to transfer data from source systems to files in a data lake, ingest the file data into staging tables, and then use SQL statements to load the data from the staging tables into the dimension and fact tables. Usually data loading is performed as a periodic batch process in which inserts and updates to the data warehouse are coordinated to occur at a regular interval (for example, daily, weekly, or monthly).
