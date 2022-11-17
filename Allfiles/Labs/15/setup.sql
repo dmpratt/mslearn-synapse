@@ -344,7 +344,7 @@ GO
 	[ProductAlternateKey] [nvarchar](30) NULL,
     [ProductName] [nvarchar](50) NULL,
     [ProductCategory] [nvarchar](24) NULL,
-    [Color] [nvarchar](30) NOT NULL,
+    [Color] [nvarchar](30) NULL,
     [Size] [nvarchar](50) NULL,
     [ListPrice] [money] NULL,
     [Discontinued] [nvarchar](30) NULL)
