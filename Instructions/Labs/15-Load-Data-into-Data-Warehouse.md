@@ -221,7 +221,7 @@ INSERT INTO dbo.DimCustomer ([CustomerKey],[GeographyKey],[CustomerAlternateKey]
 [EnglishOccupation],[SpanishOccupation],[FrenchOccupation],[HouseOwnerFlag],[NumberCarsOwned],[AddressLine1],[AddressLine2],[Phone],
 [DateFirstPurchase],[CommuteDistance])
 SELECT *
-FROM dbo.StageCustomers AS stg
+FROM dbo.StageCustomer AS stg
 WHERE NOT EXISTS
     (SELECT * FROM dbo.DimCustomer AS dim
      WHERE dim.CustomerKey = stg.CustomerKey);
@@ -230,16 +230,16 @@ SET IDENTITY_INSERT dbo.DimCustomer OFF
 
 --Look for type 1 updates in our staging file
 SELECT dim.LastName, stg.LastName, dim.EmailAddress, stg.EmailAddress, dim.Phone, stg.Phone
-FROM DimCustomer dim inner join StageCustomers stg
+FROM DimCustomer dim inner join StageCustomer stg
 ON dim.CustomerKey = stg.CustomerKey
 WHERE dim.LastName <> stg.LastName OR dim.EmailAddress <> stg.EmailAddress OR dim.Phone <> stg.Phone
 
 -- Type 1 updates (name, email, phone)
 UPDATE dbo.DimCustomer
-SET dim.LastName = stg.LastName,
-    dim.EmailAddress = stg.EmailAddress,
-    dim.Phone = stg.Phone
-FROM DimCustomer dim inner join StageCustomers stg
+SET LastName = stg.LastName,
+    EmailAddress = stg.EmailAddress,
+    Phone = stg.Phone
+FROM DimCustomer dim inner join StageCustomer stg
 ON dim.CustomerKey = stg.CustomerKey
 WHERE dim.LastName <> stg.LastName OR dim.EmailAddress <> stg.EmailAddress OR dim.Phone <> stg.Phone
 
@@ -249,7 +249,7 @@ SELECT stg.GeographyKey,stg.CustomerAlternateKey,stg.Title,stg.FirstName,stg.Mid
 stg.Suffix,stg.Gender,stg.EmailAddress,stg.YearlyIncome,stg.TotalChildren,stg.NumberChildrenAtHome,stg.EnglishEducation,stg.SpanishEducation,stg.FrenchEducation,
 stg.EnglishOccupation,stg.SpanishOccupation,stg.FrenchOccupation,stg.HouseOwnerFlag,stg.NumberCarsOwned,stg.AddressLine1,stg.AddressLine2,stg.Phone,
 stg.DateFirstPurchase,stg.CommuteDistance
-FROM dbo.StageCustomers AS stg
+FROM dbo.StageCustomer AS stg
 JOIN dbo.DimCustomer AS dim
 ON stg.CustomerKey = dim.CustomerKey
 WHERE stg.AddressLine1 <> dim.AddressLine1 OR stg.AddressLine2 <> dim.AddressLine2;
