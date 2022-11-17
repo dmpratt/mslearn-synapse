@@ -109,12 +109,12 @@ Let's also bring in another table, which will be used for later using the same m
 >**NOTE**: Don't forget to change the ***datalakexxxxxx*** with the name of your datalake name in both the ```FROM``` and the ```ERRORFILE``` elements below.
 
 ```sql
-COPY INTO dbo.StageCustomers
+COPY INTO dbo.StageCustomer
 (CustomerKey, GeographyKey, CustomerAlternateKey, Title, FirstName, MiddleName, LastName, NameStyle, BirthDate, 
 MaritalStatus, Suffix, Gender, EmailAddress, YearlyIncome, TotalChildren, NumberChildrenAtHome, EnglishEducation, 
 SpanishEducation, FrenchEducation, EnglishOccupation, SpanishOccupation, FrenchOccupation, HouseOwnerFlag, 
 NumberCarsOwned, AddressLine1, AddressLine2, Phone, DateFirstPurchase, CommuteDistance)
-FROM 'https://datalakemrq3yz8.dfs.core.windows.net/files/data/StageCustomers.csv'
+FROM 'https://datalakemrq3yz8.dfs.core.windows.net/files/data/StageCustomer.csv'
 WITH
 (
  FILE_TYPE = 'CSV'
