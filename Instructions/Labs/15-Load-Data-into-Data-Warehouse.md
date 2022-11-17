@@ -50,7 +50,7 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
 
     > **Note**: Be sure to remember this password!
 
-8. Wait for the script to complete - this typically takes around 10 minutes, but in some cases may take longer. While you're waiting, review the [Apache Spark Pool Configurations](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-pool-configurations) article in the Azure Synapse Analytics documentation.
+8. Wait for the script to complete - this typically takes around 10 minutes, but in some cases may take longer. While you're waiting, review the [dedicated SQL pool (formery SQL DW) in Azure Synapse Analytics](https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-overview-what-is) article in the Azure Synapse Analytics documentation.
 
 ## View and Navigate Synapse Workspace
 
