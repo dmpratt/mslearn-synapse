@@ -145,7 +145,7 @@ The statement allows for creating a new table with the results of a SELECT state
 CREATE TABLE dbo.DimProduct
 WITH
 (
-    DISTRIBUTION = REPLICATE,
+    DISTRIBUTION = HASH(ProductAltKey),
     CLUSTERED COLUMNSTORE INDEX
 )
 AS
@@ -157,7 +157,8 @@ SELECT ROW_NUMBER() OVER(ORDER BY ProductID) AS ProductKey,
        Size,
        ListPrice,
        Discontinued
-FROM dbo.StageProduct;
+FROM dbo.StageProduct
+WHERE Color != 'NA' -- Pull Everything except undefined colors
 ```
 
 By default, tables are Round Robin distributed. This default makes it easy for users to start creating tables without having to decide how their tables should be distributed. Round Robin tables may perform sufficiently for some workloads. But, in most cases, a distribution column provides better performance.
@@ -261,12 +262,15 @@ As an alternative to using multiple ```INSERT``` and ```UPDATE``` statement, you
 
 ```sql
 MERGE dbo.DimProduct AS tgt
-    USING (SELECT * FROM dbo.StageProducts) AS src
-    ON src.ProductID = tgt.ProductBusinessKey
+    USING (SELECT ProductID, ProductAlternateKey, ProductName, ProductCategory, Color, Size,
+    ListPrice, Discontinued FROM dbo.StageProduct) AS src
+    ON src.ProductID = tgt.ProductAltKey
 WHEN MATCHED THEN
     UPDATE SET
+        tgt.ProductKey = src.ProductID,
+        tgt.ProductAltKey = src.ProductID,
         tgt.ProductName = src.ProductName,
-        tgt.ProductCategory = src.ProductCategory
+        tgt.ProductCategory = src.ProductCategory,
         tgt.Color = src.Color,
         tgt.Size = src.Size,
         tgt.ListPrice = src.ListPrice,
@@ -274,6 +278,7 @@ WHEN MATCHED THEN
 WHEN NOT MATCHED THEN
     INSERT VALUES
         (src.ProductID,
+         src.ProductID,
          src.ProductName,
          src.ProductCategory,
          src.Color,
