@@ -68,57 +68,51 @@ Open the sales folder and the orders folder it contains, and observe the files c
 3. On the **Manage** page, on the **SQL pools** tab, select the row for the **sql*xxxxxxx*** dedicated SQL pool and use its **&#9655;** icon to start it; confirming that you want to resume it when prompted.
 4. Wait for the SQL pool to resume. This can take a few minutes. You can use the **&#8635; Refresh** button to check its status periodically. The status will show as **Online** when it is ready.
 
-## Understand pipeline control flow
-
-Control flow is an orchestration of pipeline activities that includes chaining activities in a sequence, branching, defining parameters at the pipeline level, and passing arguments while invoking the pipeline on demand or from a trigger.
-
-Control flow can also include looping containers, that can pass information for each iteration of the looping container.
-
-If a For Each loop is used as a control flow activity, Azure Data Factory can start multiple activities in parallel using this approach. This allows you to build complex and iterative processing logic within the pipelines you create with Azure Data Factory, which supports the creation of diverse data integration patterns such as building a modern data warehouse.
-
-Some of the common control flow activities are described in the below sections.
-
-### Chaining activities
-
-Within Azure Data Factory, you can chain activities in a sequence within a pipeline. It is possible to use the dependsOn property in an activity definition to chain it with an upstream activity.
-
-### Branching activities
-
-Use Azure Data Factory for branching activities within a pipeline. An example of a branching activity is The If-condition activity which is similar to an if-statement provided in programming languages. A branching activity evaluates a set of activities, and when the condition evaluates to true, a set of activities are executed. When it evaluates to false, then an alternative set of activities is executed.
-
-### Parameters
-
-You can define parameters at the pipeline level and pass arguments while you're invoking the pipeline on-demand or from a trigger. Activities then consume the arguments held in a parameter as they are passed to the pipeline.
-
-### Custom state passing
-
-Custom state passing is made possible with Azure Data Factory. Custom state passing is an activity that created output or the state of the activity that needs to be consumed by a subsequent activity in the pipeline. An example is that in a JSON definition of an activity, you can access the output of the previous activity. Using custom state passing enables you to build workflows where values are passing through activities.
-
-### Looping containers
-
-The looping containers umbrella of control flow such as the ForEach activity defines repetition in a pipeline. It enables you to iterate over a collection and runs specified activities in the defined loop. It works similarly to the 'for each looping structure' used in programming languages. Besides each activity, there is also an Until activity. This functionality is similar to a do-until loop used in programming. What it does is running a set of activities (do) in a loop until the condition (until) is met.
-
-### Trigger-based flows
-
-Pipelines can be triggered by on-demand (event-based, for example, blob post) or wall-clock time.
-
-### Invoke a pipeline from another pipeline
-
-The Execute Pipeline activity with Azure Data Factory allows a Data Factory pipeline to invoke another pipeline.
-
-### Delta flows
-
-Use-cases related to using delta flows are delta loads. Delta loads in ETL patterns will only load data that has changed since a previous iteration of a pipeline. Capabilities such as lookup activity, and flexible scheduling helps handling delta load jobs. In the case of using a Lookup activity, it will read or look up a record or table name value from any external source. This output can further be referenced by succeeding activities.
-
-### Other control flows
-
-There are many more control flow activities. See the following items for other useful activities:
-
-- Web activity: The web activity in Azure Data Factory using control flows, can call a custom RESTendpoint from a Data Factory pipeline. Datasets and linked services can be passed in order to get consumed by the activity.
-
 - Get metadata activity: The Get metadata activity retrieves the metadata of any data in Azure Data Factory.
 
 ## Build a copy pipeline
+
+1. In Synapse Studio, on the **Home** page, select **Ingest** to open the **Copy Data** tool
+2. In the Copy Data tool, on the **Properties** step, ensure that **Built-in copy task** and **Run once now** are selected, and click **Next >**.
+3. On the **Source** step, in the **Dataset** substep, select the following settings:
+    - **Source type**: Azure Data lake Storage Gen2
+    - **Connection**: Select synapsexxxxxxx-WorkspaceDefaultStorage **being sure to replace the 'xxxxxx' with your suffix**.
+    - **Integration Runtime**: AutoResolveIntegrationRuntime ***Autoselected*** 
+    - **File or Folder**: Select **Browse** and then select **files**, then select **data**, and finally select **StageCustomers.csv**. One you have this selected, press the **OK** button at the bottom of the pane. Then ensure the following settings are selected, and then select **Next >**:
+        - **Binary copy**: <u>Un</u>selected
+        - **Recursively**: Selected
+        - **Enable partition discovery**: <u>Un</u>selected
+        - **Max concurrent connections**: *Leave blank*
+        - **Filter by last modified**: *Leave both UTC times blank*
+4. On the **Source** step, in the **Configuration** substep, select **Preview data** to see a preview of the product data your pipeline will ingest, then close the preview.
+5. After previewing the data, on the **File format settings** page, ensure the following settings are selected, and then select **Next >**:
+    - **File format**: DelimitedText
+    - **Column delimiter**: Comma (,)
+    - **Row delimiter**: Line feed (\n)
+    - **First row as header**: Selected
+    - **Compression type**: None
+6. On the **Destination** step, in the **Dataset** substep, select the following settings:
+    - **Destination type**: Azure Synapse dedicated SQL pool
+    - **Connection**: *your sqlxxxxxx instance*
+    - **Source**: StageCustomers
+    - **Target**: *Select Existing Table*
+    - **-Select-**: dbo.DimCustomer
+7. After selecting the Target, on the **Destination/Destination data store** step, select **Next >**:
+8. On the **Column mapping** ensure the following settings:
+    - **Source**: Checked
+    - **Column Mappings**: Review and look for any warnings, you should see a truncation warning on NameStyle which can be ignored.
+10. On the **Settings** step, enter the following settings and then click **Next >**:
+    - **Task name**: Copy DimCustomers
+    - **Task description** Copy DimCustomers data from Data Lake
+    - **Fault tolerance**: *Leave blank*
+    - **Enable logging**: <u>Un</u>selected
+    - **Enable staging**: <u>Un</u>selected
+    - **Copy method**: Bulk Insert
+    - **Bulk insert table lock**: No
+11. On the **Review and finish** step, on the **Review** substep, read the summary and then click **Next >**.
+12. On the **Deployment** step, wait for the pipeline to be deployed and then click **Finish**.
+13. In Synapse Studio, select the **Monitor** page, and in the **Pipeline runs** tab, wait for the **Copy DimCustomers** pipeline to complete with a status of **Succeeded** (you can use the **&#8635; Refresh** button on the Pipeline runs page to refresh the status).
+14. View the **Integrate** page, and verify that it now contains a pipeline named **Copy DimCustomers**.
 
 ## Debug pipelines
 
