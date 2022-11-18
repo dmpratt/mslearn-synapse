@@ -114,13 +114,13 @@ COPY INTO dbo.StageCustomer
 MaritalStatus, Suffix, Gender, EmailAddress, YearlyIncome, TotalChildren, NumberChildrenAtHome, EnglishEducation, 
 SpanishEducation, FrenchEducation, EnglishOccupation, SpanishOccupation, FrenchOccupation, HouseOwnerFlag, 
 NumberCarsOwned, AddressLine1, AddressLine2, Phone, DateFirstPurchase, CommuteDistance)
-FROM 'https://datalakemrq3yz8.dfs.core.windows.net/files/data/StageCustomer.csv'
+FROM 'https://datalakexxxxxx.dfs.core.windows.net/files/data/StageCustomer.csv'
 WITH
 (
  FILE_TYPE = 'CSV'
  ,MAXERRORS = 0
  ,FIRSTROW = 2 --Defines where the first data row starts
- ,ERRORFILE = 'https://datalakemrq3yz8.dfs.core.windows.net/files/'
+ ,ERRORFILE = 'https://datalakexxxxxx.dfs.core.windows.net/files/'
 )
 --END
 GO
@@ -169,8 +169,17 @@ For example, if you have an orders table distributed by order_id, and a transact
 
 The CTAS operation will allow us to use the round-robin table type for loading in those cases and then create a distributed table once the data is understood within the warehouse.
 
->**NOTE**: Change the ***datalakexxxxxx*** with the name of your datalake name created during the beginning of the lab. If you execute this script prior to changing it you will have to drop and recreate the EXTERNAL DATA SOURCE.
 ## Using a CREATE EXTERNAL TABLE AS SELECT (CETAS)
+
+You can use CREATE EXTERNAL TABLE AS SELECT (CETAS) in dedicated SQL pool or serverless SQL pool to complete the following tasks:
+
+- Create an external table
+- Export, in parallel, the results of a Transact-SQL SELECT statement to:
+  - Hadoop
+  - Azure Storage Blob
+  - Azure Data Lake Storage Gen2
+
+>**NOTE**: Change the ***datalakexxxxxx*** with the name of your datalake name created during the beginning of the lab. If you execute this script prior to changing it you will have to drop and recreate the EXTERNAL DATA SOURCE.
 
 ```sql
 -- Create the external datasource (changing the suffix to match yours

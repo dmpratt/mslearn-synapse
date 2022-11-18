@@ -8,7 +8,7 @@ lab:
 
 In this lab, we're going to load data into a dedicated SQL Pool using the built-in Synapse Analytics Pipeline located within Azure Synapse Analytics Explorer. This lab will start with a basic copy action and then built up from there
 
-This lab will take approximately **30** minutes to complete.
+This lab will take approximately **45** minutes to complete.
 
 ## Before you start
 
