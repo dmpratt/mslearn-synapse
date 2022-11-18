@@ -114,14 +114,6 @@ Open the sales folder and the orders folder it contains, and observe the files c
 13. In Synapse Studio, select the **Monitor** page, and in the **Pipeline runs** tab, wait for the **Copy DimCustomers** pipeline to complete with a status of **Succeeded** (you can use the **&#8635; Refresh** button on the Pipeline runs page to refresh the status).
 14. View the **Integrate** page, and verify that it now contains a pipeline named **Copy DimCustomers**.
 
-## Debug pipelines
-
-## Add parameters
-
-## Integrate a notebook with Azure Synapse pipeline
-
-## Execute
-
 ## Delete Azure resources
 
 If you've finished exploring Azure Synapse Analytics, you should delete the resources you've created to avoid unnecessary Azure costs.
