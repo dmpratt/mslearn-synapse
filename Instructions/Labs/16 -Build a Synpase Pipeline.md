@@ -114,6 +114,95 @@ Open the sales folder and the orders folder it contains, and observe the files c
 13. In Synapse Studio, select the **Monitor** page, and in the **Pipeline runs** tab, wait for the **Copy DimCustomers** pipeline to complete with a status of **Succeeded** (you can use the **&#8635; Refresh** button on the Pipeline runs page to refresh the status).
 14. View the **Integrate** page, and verify that it now contains a pipeline named **Copy DimCustomers**.
 
+## Build a Transformation Pipeline in Azure
+
+Unlike Azure Data Factory, which requires a separate service to be installed in order to build Orchestration pipelines, Synapse Analytics has pipeeline orchestration built-in. Let's build a simple transformation pipeline using Azure Synapse Analytics Pipelinesl.
+
+1. From Synapse studio , on the **Home** page, select the **Integrate** icon to open the **Integrate Pipeline** tool
+2. Click the (+) symbol and select **Pipeline** which loads the familiar Orchestration tool if you've used Azure Data Factory (ADF) before.
+3. Under the **Activities** tab, select the **Move & transform** option and then drag **Data flow** onto the canvas.
+4. Under the **Settings** tab of the **Data flow**  select the **+ New** to create a new **Dataflow** as shown below:
+
+    ![Build azure data flow pipeline](./images/build-transform-pipeline.png)
+
+5. In the **properties** of the Dataflow1 name it **CustomerTransform**
+6. Selecting the **DataFlow** on the canvas, in the **Source settings** tab name the **Output stream name** to **CustomersDB**.
+7. Click on **+ New** to create a new Dataset choosing **Azure Data Lake Storage Gen2** then click **continue**
+
+     ![New Dataset Canvas](./images/new-dataset-canvas.png)
+
+8. Select **DelimitedText** and then click **Continue**
+
+    ![Select Delimited Text](./images/select-format-canvas.png)
+
+9. Name your dataset **CustomersText**. In the **Linked service** drop down, choose your **Synapsexxxxxx** instance. At this point a **New Linked Service** panel will open.
+10. Change the **Name** to **CustomerLinkService**, Select your appropriate **Azure Subscription**, and the **Storage account name** for **datalakexxxxxx**, then click **Create**
+
+    ![New Linked Service](./images/new-linked-service.png)
+
+11. In the **File Path** brows to ***Files***, ***data***, ***dimCustomer.csv***
+12. Click **OK** on the **Set Properties** tab, your **CustomersText** panel should look similar to below:
+
+    ![Customer Text Congfiguration](./images/custom-text-panel.png)
+
+13. If not selected above, select **First row as header** and then click **preview data** in the line of the **File path**. your results should look similar to below:
+
+    ![Preview data for CustomerText](./images/preview-customer-data.png)
+
+14. Close the preview window and return to the **Dataflow1** tab, move the ***Data flow debug*** swtich to on and then select **OK** accepting the default values in the **Turn on data flow debug**.
+16. on the **CustomersDB** select **Projection** and then select the **Import projection** to populate the schema if it's not already populated.
+
+    ![Import Schema Projection](./images/import-schema-projection.png)
+
+17. Select the **+** on the bottom right-hand side of the ***CustomersDB*** **Data source** and select **Filter**.
+
+    ![Filter selection](.images/../images/select-filter-transform.png)
+
+18. In the **Filter settings** select **Filter on** and click on the text ***Enter filter...***, select ***Open expression builder***
+19. In the **Output Stream name** enter ***OldestCustomers***, next in the filter on type the following code:
+
+```powershell
+toInteger(left(DateFirstPurchase, 4)) <= 2011
+```
+20. Select the **+** symbol on the bottom-right of the **OldestCustomers** Filter component and select **Aggregate** option on the canvas.
+
+    ![Select oldest customers to aggregate](./images/aggregate-oldest-customers.png)
+
+21. In **Output stream name** type ***AggregateOldestCustomers***
+22. In the **Group by** tab select GeographyKey and then select the **Aggregates** tab
+23. In the **Aggregates tab** under **Column** enter ***TotalCountByRegion*** and in the ***Expression** enter the following expression:
+    ```powershell
+    count(CustomerKey)
+    ```
+24. Click on the **Data preview** tab and click **Refresh**, you will find a result similar to this:
+    
+    ![Preview total count by region](./images/total-count-by-region.png)
+
+25.  In the same manner as before, select the **+** symbol at the bottom-right of the **AggregateOldestCustomers** aggregate component and select **Sink** option on the canvas.
+26.  Name the **Output stream name** ***OldestCustomersSink*** and then select **+ New** on the **Dataset** line.
+27.  Select **Azure Data Lake Storage Gen2** and then select the **Continue** button.
+28.  Select the **DelimitedText** format and select the **Continue** button.
+29.  On the **Set properties** replace ***DelimitedText1*** in the **Name** field with ***CustomerAggregates***.
+30.  Select **AzureDataLakeStorage1** and then in the **File path** row, select ***sample-data and type** type ***Customer-Output***, in the cell with ***output*** type ***2008***. Leave the final cell ***file*** blank as it will automatically populate the results.
+31.  Select the **Frist row as header** and then press the **OK** button.
+
+![Set the sink properties](./images/Set-sink-properties.png)
+
+
+## Debug and monitor the Data Flow
+We can debug the pipeline before we publish it. In this step, you're going to trigger a debug run of the data flow pipeline. While data preview doesn't write data, a debug run will write data to your sink destination. This was made possible by selecting the **Data flow debug** option earlier in the lab.
+
+1. Select the **Pipeline 1** tab on the canvas. Click **Debug** to start a debug run.
+
+ ![Debug the synapse pipeline before publishing](./images/debug-synapse-pipeline.png)
+
+2. Click on the **refresh** icon to view the status of the pipeline in debug mode.
+
+    ![Running pipeline image](./images/running-synapse-pipeline.png)
+
+3. Click on the **Data** tab in Synapse Studio and then select the **Linked** tab.
+4. 
+
 ## Delete Azure resources
 
 If you've finished exploring Azure Synapse Analytics, you should delete the resources you've created to avoid unnecessary Azure costs.
