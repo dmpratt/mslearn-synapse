@@ -1,7 +1,7 @@
 ---
 lab:
     title: 'Transform data using Spark in Synapse Analytics'
-    module: 'Use Azure Synapse notebooks to transform data'
+    module: 'Analyze data in a data lake with Spark Pools'
 ---
 
 # Transform data using Spark in Synapse Analytics

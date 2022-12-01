@@ -1,7 +1,7 @@
 ---
 lab:
     title: 'Load Data into a Relational Data Warehouse'
-    module: 'Loading Azure Data Lake data into Azure Synapse Analytics'
+    module: 'Analyze data in a relational data warehouse with Azure Synapse Analytics'
 ---
 
 # Load Data into a Relational Data Warehouse
