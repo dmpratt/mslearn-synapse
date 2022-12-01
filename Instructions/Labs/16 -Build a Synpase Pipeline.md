@@ -188,7 +188,7 @@ toInteger(left(DateFirstPurchase, 4)) <= 2011
 
 ![Set the sink properties](./images/Set-sink-properties.png)
 
-
+## Integrate a Notebook within Azure Synapse
 ## Debug and monitor the Data Flow
 We can debug the pipeline before we publish it. In this step, you're going to trigger a debug run of the data flow pipeline. While data preview doesn't write data, a debug run will write data to your sink destination. This was made possible by selecting the **Data flow debug** option earlier in the lab.
 
@@ -201,7 +201,36 @@ We can debug the pipeline before we publish it. In this step, you're going to tr
     ![Running pipeline image](./images/running-synapse-pipeline.png)
 
 3. Click on the **Data** tab in Synapse Studio and then select the **Linked** tab.
-4. 
+   
+## Execute a notebook in an Azure Synapse Pipeline
+
+Earlier in a lab we created a Synapse Notebook and created some tables. We're going to return back to that notebook and add some code that allows us to call and run a step within the notebook as part of our pipeline using a parameter.
+## Create a parameter cell
+
+1. On the **Develop** tab, select the notebook named **Spark Transform**
+2. Below the section in the notebook named **Load Source Data** and below the code block that populates the ***order_details*** python dataframe, click on the **+ Code**.
+3. Type or paste the following commands into the new code window.
+
+```python
+# We're going to use this for integration into a Synapse Pipleline
+import uuid
+
+#generates a random GUID
+runId = uuid.uuid4()
+print("Your parquet file to be created: " + runId)
+```
+
+4. Mouse-over the code and select the **...** ellipse on the right-side of the code block then select **Toggle parameter cell**. You will notice the text ***parameters*** now appear in the bottom-right or top-right corner of the code block.
+5. Below this code block select the **+ Code** to create another code block.
+6. Type or paste the following commands into the new window
+
+```python
+%%pyspark
+
+order_details.write.parquet('abfss://files@<YOURDATALAKEXXXXXX>.dfs.core.windows.net/data/order_details/' + str(runId) + '.parquet')
+```
+
+7. Replace the text in the new code **<YOURDATALAKEXXXXXX>** with the name of the data lake within your **Resource Group** during the lab build.
 
 ## Delete Azure resources
 
