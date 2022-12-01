@@ -6,7 +6,7 @@ lab:
 
 ## Introduction
 
-In this lab, we're going to load data into a dedicated SQL Pool using the built-in Synapse Analytics Pipeline located within Azure Synapse Analytics Explorer. This lab will start with a basic copy action and then built up from there
+In this lab, we're going to load data into a dedicated SQL Pool using the built-in Synapse Analytics Pipeline located within Azure Synapse Analytics Explorer. This lab will consist of a basic copy, transform, and sink action within Azure Synapse Analytics.
 
 This lab will take approximately **45** minutes to complete.
 
@@ -42,7 +42,7 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
     cd dp-000/Allfiles/Labs/16
     ./setup.ps1
     ```
-    
+
 6. If prompted, choose which subscription you want to use (this will only happen if you have access to multiple Azure subscriptions).
 7. When prompted, enter a suitable password to be set for your Azure Synapse SQL pool.
 
@@ -66,19 +66,19 @@ Open the sales folder and the orders folder it contains, and observe the files c
 1. Open the **synapse*xxxxxxx*** Synapse workspace, and on its **Overview** page, in the **Open Synapse Studio** card, select **Open** to open Synapse Studio in a new browser tab; signing in if prompted.
 2. On the left side of Synapse Studio, use the **&rsaquo;&rsaquo;** icon to expand the menu - this reveals the different pages within Synapse Studio.
 3. On the **Manage** page, on the **SQL pools** tab, select the row for the **sql*xxxxxxx*** dedicated SQL pool and use its **&#9655;** icon to start it; confirming that you want to resume it when prompted.
-4. Wait for the SQL pool to resume. This can take a few minutes. You can use the **&#8635; Refresh** button to check its status periodically. The status will show as **Online** when it is ready.
+4. Wait for the SQL pool to resume. This can take a few minutes. You can use the **&#8635; Refresh** button to check its status periodically. The status will show as **Online** when it's ready.
 
 - Get metadata activity: The Get metadata activity retrieves the metadata of any data in Azure Data Factory.
 
 ## Build a copy pipeline
 
 1. In Synapse Studio, on the **Home** page, select **Ingest** to open the **Copy Data** tool
-2. In the Copy Data tool, on the **Properties** step, ensure that **Built-in copy task** and **Run once now** are selected, and click **Next >**.
+2. In the Copy Data tool, on the **Properties** step, ensure that **Built-in copy task** and **Run once now** are selected, and select **Next >**.
 3. On the **Source** step, in the **Dataset** substep, select the following settings:
     - **Source type**: Azure Data lake Storage Gen2
     - **Connection**: Select synapsexxxxxxx-WorkspaceDefaultStorage **being sure to replace the 'xxxxxx' with your suffix**.
     - **Integration Runtime**: AutoResolveIntegrationRuntime ***Autoselected*** 
-    - **File or Folder**: Select **Browse** and then select **files**, then select **data**, and finally select **StageCustomers.csv**. One you have this selected, press the **OK** button at the bottom of the pane. Then ensure the following settings are selected, and then select **Next >**:
+    - **File or Folder**: Select **Browse** and then select **files**, then select **data**, and finally select **StageCustomers.csv**. One you've this selected, press the **OK** button at the bottom of the pane. Then ensure the following settings are selected, and then select **Next >**:
         - **Binary copy**: <u>Un</u>selected
         - **Recursively**: Selected
         - **Enable partition discovery**: <u>Un</u>selected
@@ -98,10 +98,10 @@ Open the sales folder and the orders folder it contains, and observe the files c
     - **Target**: *Select Existing Table*
     - **-Select-**: dbo.DimCustomer
 7. After selecting the Target, on the **Destination/Destination data store** step, select **Next >**:
-8. On the **Column mapping** ensure the following settings:
+8. On the Column mapping,** ensure the following settings:
     - **Source**: Checked
-    - **Column Mappings**: Review and look for any warnings, you should see a truncation warning on NameStyle which can be ignored.
-10. On the **Settings** step, enter the following settings and then click **Next >**:
+    - **Column Mappings**: Review and look for any warnings, you should see a truncation warning on NameStyle, which can be ignored.
+10. On the **Settings** step, enter the following settings and then select **Next >**:
     - **Task name**: Copy DimCustomers
     - **Task description** Copy DimCustomers data from Data Lake
     - **Fault tolerance**: *Leave blank*
@@ -109,47 +109,47 @@ Open the sales folder and the orders folder it contains, and observe the files c
     - **Enable staging**: <u>Un</u>selected
     - **Copy method**: Bulk Insert
     - **Bulk insert table lock**: No
-11. On the **Review and finish** step, on the **Review** substep, read the summary and then click **Next >**.
-12. On the **Deployment** step, wait for the pipeline to be deployed and then click **Finish**.
+11. On the **Review and finish** step, on the **Review** substep, read the summary and then select **Next >**.
+12. On the **Deployment** step, wait for the pipeline to be deployed and then select **Finish**.
 13. In Synapse Studio, select the **Monitor** page, and in the **Pipeline runs** tab, wait for the **Copy DimCustomers** pipeline to complete with a status of **Succeeded** (you can use the **&#8635; Refresh** button on the Pipeline runs page to refresh the status).
 14. View the **Integrate** page, and verify that it now contains a pipeline named **Copy DimCustomers**.
 
 ## Build a Transformation Pipeline in Azure
 
-Unlike Azure Data Factory, which requires a separate service to be installed in order to build Orchestration pipelines, Synapse Analytics has pipeeline orchestration built-in. Let's build a simple transformation pipeline using Azure Synapse Analytics Pipelinesl.
+Unlike Azure Data Factory, which requires a separate service to be installed in order to build Orchestration pipelines, Synapse Analytics has pipeline orchestration built in. Let's build a transformation pipeline using Azure Synapse Analytics Pipeline.
 
-1. From Synapse studio , on the **Home** page, select the **Integrate** icon to open the **Integrate Pipeline** tool
-2. Click the (+) symbol and select **Pipeline** which loads the familiar Orchestration tool if you've used Azure Data Factory (ADF) before.
+1. From Synapse studio, on the **Home** page, select the **Integrate** icon to open the **Integrate Pipeline** tool
+2. Select the (+) symbol and select **Pipeline** which loads the familiar Orchestration tool if you've used Azure Data Factory (ADF) before.
 3. Under the **Activities** tab, select the **Move & transform** option and then drag **Data flow** onto the canvas.
 4. Under the **Settings** tab of the **Data flow**  select the **+ New** to create a new **Dataflow** as shown below:
 
     ![Build azure data flow pipeline](./images/build-transform-pipeline.png)
 
-5. In the **properties** of the Dataflow1 name it **CustomerTransform**
+5. In the properties of the Dataflow1 name, it **CustomerTransform**
 6. Selecting the **DataFlow** on the canvas, in the **Source settings** tab name the **Output stream name** to **CustomersDB**.
-7. Click on **+ New** to create a new Dataset choosing **Azure Data Lake Storage Gen2** then click **continue**
+7. Select on **+ New** to create a new Dataset choosing **Azure Data Lake Storage Gen2** then select **continue**
 
      ![New Dataset Canvas](./images/new-dataset-canvas.png)
 
-8. Select **DelimitedText** and then click **Continue**
+8. Select **DelimitedText** and then Select **Continue**
 
     ![Select Delimited Text](./images/select-format-canvas.png)
 
-9. Name your dataset **CustomersText**. In the **Linked service** drop down, choose your **Synapsexxxxxx** instance. At this point a **New Linked Service** panel will open.
-10. Change the **Name** to **CustomerLinkService**, Select your appropriate **Azure Subscription**, and the **Storage account name** for **datalakexxxxxx**, then click **Create**
+9. Name your dataset **CustomersText**. In the **Linked service** drop-down, choose your **Synapsexxxxxx** instance. At this point, a **New Linked Service** panel will open.
+10. Change the **Name** to **CustomerLinkService**, Select your appropriate **Azure Subscription**, and the **Storage account name** for **datalakexxxxxx**, then select **Create**
 
     ![New Linked Service](./images/new-linked-service.png)
 
 11. In the **File Path** brows to ***Files***, ***data***, ***dimCustomer.csv***
-12. Click **OK** on the **Set Properties** tab, your **CustomersText** panel should look similar to below:
+12. Select **OK** on the **Set Properties** tab, your **CustomersText** panel should look similar to below:
 
     ![Customer Text Congfiguration](./images/custom-text-panel.png)
 
-13. If not selected above, select **First row as header** and then click **preview data** in the line of the **File path**. your results should look similar to below:
+13. If not selected above, select **First row as header** and then select **preview data** in the line of the **File path**. your results should look similar to below:
 
     ![Preview data for CustomerText](./images/preview-customer-data.png)
 
-14. Close the preview window and return to the **Dataflow1** tab, move the ***Data flow debug*** swtich to on and then select **OK** accepting the default values in the **Turn on data flow debug**.
+14. Close the preview window and return to the **Dataflow1** tab, move the ***Data flow debug*** switch to on and then select **OK** accepting the default values in the **Turn on data flow debug**.
 16. on the **CustomersDB** select **Projection** and then select the **Import projection** to populate the schema if it's not already populated.
 
     ![Import Schema Projection](./images/import-schema-projection.png)
@@ -158,7 +158,7 @@ Unlike Azure Data Factory, which requires a separate service to be installed in 
 
     ![Filter selection](.images/../images/select-filter-transform.png)
 
-18. In the **Filter settings** select **Filter on** and click on the text ***Enter filter...***, select ***Open expression builder***
+18. In the Filter settings, **select Filter on** and select on the text ***Enter filter...***, select ***Open expression builder***
 19. In the **Output Stream name** enter ***OldestCustomers***, next in the filter on type the following code:
 
 ```powershell
@@ -174,7 +174,7 @@ toInteger(left(DateFirstPurchase, 4)) <= 2011
     ```powershell
     count(CustomerKey)
     ```
-24. Click on the **Data preview** tab and click **Refresh**, you will find a result similar to this:
+24. Select on the **Data preview** tab and select **Refresh**, you'll find a result similar to this:
     
     ![Preview total count by region](./images/total-count-by-region.png)
 
