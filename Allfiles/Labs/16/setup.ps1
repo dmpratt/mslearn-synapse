@@ -133,6 +133,7 @@ New-AzResourceGroup -Name $resourceGroupName -Location $Region | Out-Null
 # Create Synapse workspace
 $synapseWorkspace = "synapse$suffix"
 $dataLakeAccountName = "datalake$suffix"
+$sqlDatabaseName = "sql$suffix"
 $sparkPool = "spark$suffix"
 
 
@@ -140,9 +141,11 @@ write-host "Creating $synapseWorkspace Synapse Analytics workspace in $resourceG
 New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName `
   -TemplateFile "setup.json" `
   -Mode Complete `
+  -uniqueSuffix $suffix `
   -workspaceName $synapseWorkspace `
   -dataLakeAccountName $dataLakeAccountName `
   -sparkPoolName $sparkPool `
+  -sqlDatabaseName $sqlDatabaseName `
   -sqlUser $sqlUser `
   -sqlPassword $sqlPassword `
   -uniqueSuffix $suffix `
@@ -156,7 +159,19 @@ $userName = ((az ad signed-in-user show) | ConvertFrom-JSON).UserPrincipalName
 $id = (Get-AzADServicePrincipal -DisplayName $synapseWorkspace).id
 New-AzRoleAssignment -Objectid $id -RoleDefinitionName "Storage Blob Data Owner" -Scope "/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Storage/storageAccounts/$dataLakeAccountName" -ErrorAction SilentlyContinue;
 New-AzRoleAssignment -SignInName $userName -RoleDefinitionName "Storage Blob Data Owner" -Scope "/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Storage/storageAccounts/$dataLakeAccountName" -ErrorAction SilentlyContinue;
+# Create database
+write-host "Creating the $sqlDatabaseName database..."
+sqlcmd -S "$synapseWorkspace.sql.azuresynapse.net" -U $sqlUser -P $sqlPassword -d $sqlDatabaseName -I -i setup.sql
 
+# Load data
+write-host "Loading data..."
+Get-ChildItem "./data/*.txt" -File | Foreach-Object {
+    write-host ""
+    $file = $_.FullName
+    Write-Host "$file"
+    $table = $_.Name.Replace(".txt","")
+    bcp dbo.$table in $file -S "$synapseWorkspace.sql.azuresynapse.net" -U $sqlUser -P $sqlPassword -d $sqlDatabaseName -f $file.Replace("txt", "fmt") -q -k -E -b 5000
+}
 # Upload files
 write-host "Uploading files..."
 $storageAccount = Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $dataLakeAccountName

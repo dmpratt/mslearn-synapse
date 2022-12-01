@@ -44,7 +44,7 @@
       "location": "[resourceGroup().location]",
       "defaultDataLakeStorageFilesystemName": "files",
       "computeSubnetId": "",
-
+      "sqlSKU": "DW100c",
       "storageBlobDataOwnerRoleID": "b7e6dc6d-f1e8-4753-8033-0f276bb0955b",
       "defaultDataLakeStorageAccountUrl": "[concat('https://', parameters('dataLakeAccountName'), '.dfs.core.windows.net')]",
       "sparkAutoScaleEnabled": "true",
@@ -226,6 +226,7 @@
         }
       }
     ],
+    
     "outputs": {
       "workspaceid": {
       "type": "string",

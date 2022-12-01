@@ -69,7 +69,7 @@ Open the sales folder and the orders folder it contains, and observe the files c
     - **Source type**: Azure Data lake Storage Gen2
     - **Connection**: Select synapsexxxxxxx-WorkspaceDefaultStorage **being sure to replace the 'xxxxxx' with your suffix**.
     - **Integration Runtime**: AutoResolveIntegrationRuntime ***Autoselected*** 
-    - **File or Folder**: Select **Browse** and then select **files**, then select **data**, and finally select **StageCustomers.csv**. One you've this selected, press the **OK** button at the bottom of the pane. Then ensure the following settings are selected, and then select **Next >**:
+    - **File or Folder**: Select **Browse** and then select **files**, then select **data**, and finally select **StageCustomer.csv**. One you've this selected, press the **OK** button at the bottom of the pane. Then ensure the following settings are selected, and then select **Next >**:
         - **Binary copy**: <u>Un</u>selected
         - **Recursively**: Selected
         - **Enable partition discovery**: <u>Un</u>selected
