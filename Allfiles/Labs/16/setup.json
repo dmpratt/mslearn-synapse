@@ -14,10 +14,10 @@
           "description": "Azure storage account name for data lake."
         }
       },
-      "uniqueSuffix": {
+      "sparkPoolName": {
         "type": "String",
         "metadata": {
-          "description": "Suffix added to all resource name to make them unique."
+          "description": "Name for Spark pool."
         }
       },
       "sqlDatabaseName": {
@@ -37,6 +37,12 @@
         "metadata": {
           "description": "Password for SQL User"
         }
+      },
+      "uniqueSuffix": {
+        "type": "String",
+        "metadata": {
+          "description": "Suffix added to all resource name to make them unique."
+        }        
       }
     },
     "variables": {
