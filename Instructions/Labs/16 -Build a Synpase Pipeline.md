@@ -4,7 +4,7 @@ lab:
     module: 'Transfer and transform data with Azure Synapse Analytics Pipelines'
 ---
 
-## Introduction
+## Build a data pipeline in Azure Synapse Analytics
 
 In this lab, we're going to load data into a dedicated SQL Pool using the built-in Synapse Analytics Pipeline located within Azure Synapse Analytics Explorer. This lab will consist of a basic copy, transform, and sink action within Azure Synapse Analytics.
 
