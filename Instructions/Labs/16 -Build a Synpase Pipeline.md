@@ -60,6 +60,11 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
 6. Select the files container, and note that it contains folders named data and synapse. The synapse folder is used by Azure Synapse, and the data folder contains the data files you're going to query.
 Open the sales folder and the orders folder it contains, and observe the files contained within it.
 ***Right-click*** any of the files and select Preview to see the data it contains. Note if the files contain a header row, so you can determine whether to select the option to display column headers.
+7. Prior to running the next steps, In Synapse Studio, select the **Data** page and expand the **SQL database**.
+8. Expand the ***sqlxxxxxxx (SQL)***
+9. Expand **Tables** and select **DimCustomer**.
+10. Select the ***ellipse*** located on the right of the table name.
+11. Select **New SQL script**, then select ***Select TOP 100 rows*** which will execute automatically with a TOP 100 query of the table resulting in 0 Rows.
 
 ## Build a copy pipeline
 
@@ -87,23 +92,30 @@ Open the sales folder and the orders folder it contains, and observe the files c
     - **Connection**: *your sqlxxxxxx instance*
     - **Source**: StageCustomers
     - **Target**: *Select Existing Table*
-    - **-Select-**: dbo.DimCustomer
+    - **-Select-**: dbo.StageCustomer
 7. After selecting the Target, on the **Destination/Destination data store** step, select **Next >**:
 8. On the Column mapping,** ensure the following settings:
     - **Source**: Checked
     - **Column Mappings**: Review and look for any warnings, you should see a truncation warning on NameStyle, which can be ignored.
-10. On the **Settings** step, enter the following settings and then select **Next >**:
-    - **Task name**: Copy DimCustomers
-    - **Task description** Copy DimCustomers data from Data Lake
+9. On the **Settings** step, enter the following settings and then select **Next >**:
+    - **Task name**: Copy StageCustomer
+    - **Task description** Copy StageCustomer data from Data Lake
     - **Fault tolerance**: *Leave blank*
     - **Enable logging**: <u>Un</u>selected
     - **Enable staging**: <u>Un</u>selected
     - **Copy method**: Bulk Insert
     - **Bulk insert table lock**: No
-11. On the **Review and finish** step, on the **Review** substep, read the summary and then select **Next >**.
-12. On the **Deployment** step, wait for the pipeline to be deployed and then select **Finish**.
-13. In Synapse Studio, select the **Monitor** page, and in the **Pipeline runs** tab, wait for the **Copy DimCustomers** pipeline to complete with a status of **Succeeded** (you can use the **&#8635; Refresh** button on the Pipeline runs page to refresh the status).
-14. View the **Integrate** page, and verify that it now contains a pipeline named **Copy DimCustomers**.
+10. On the **Review and finish** step, on the **Review** substep, read the summary and then select **Next >**.
+11. On the **Deployment** step, wait for the pipeline to be deployed and then select **Finish**.
+12. In Synapse Studio, select the **Monitor** page, and in the **Pipeline runs** tab, wait for the **Copy DimCustomers** pipeline to complete with a status of **Succeeded** (you can use the **&#8635; Refresh** button on the Pipeline runs page to refresh the status).
+13. View the **Integrate** page, and verify that it now contains a pipeline named **Copy StageCustomer**.
+
+### Verify the data is loaded
+
+1. In Synapse Studio, select the **Data** page and expand the **SQL database**, then expand the ***sqlxxxxxxx (SQL)***
+2. Expand **Tables** and select **DimCustomer**, then select the ellipse, select **New SQL script**, then select ***Select TOP 100 rows*** which will execute automatically and show the rows that were loaded with the **Built-in copy task**
+
+    ![Query results from pipeline load](./images/built-in-copy-results.png)
 
 ## Build a Transformation Pipeline in Azure
 
