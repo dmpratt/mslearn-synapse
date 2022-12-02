@@ -136,7 +136,6 @@ $dataLakeAccountName = "datalake$suffix"
 $sqlDatabaseName = "sql$suffix"
 $sparkPool = "spark$suffix"
 
-
 write-host "Creating $synapseWorkspace Synapse Analytics workspace in $resourceGroupName resource group..."
 New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName `
   -TemplateFile "setup.json" `
@@ -144,11 +143,9 @@ New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName `
   -uniqueSuffix $suffix `
   -workspaceName $synapseWorkspace `
   -dataLakeAccountName $dataLakeAccountName `
-  -sparkPoolName $sparkPool `
   -sqlDatabaseName $sqlDatabaseName `
   -sqlUser $sqlUser `
   -sqlPassword $sqlPassword `
-  -uniqueSuffix $suffix `
   -Force
 
 # Make the current user and the Synapse service principal owners of the data lake blob store
@@ -159,6 +156,7 @@ $userName = ((az ad signed-in-user show) | ConvertFrom-JSON).UserPrincipalName
 $id = (Get-AzADServicePrincipal -DisplayName $synapseWorkspace).id
 New-AzRoleAssignment -Objectid $id -RoleDefinitionName "Storage Blob Data Owner" -Scope "/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Storage/storageAccounts/$dataLakeAccountName" -ErrorAction SilentlyContinue;
 New-AzRoleAssignment -SignInName $userName -RoleDefinitionName "Storage Blob Data Owner" -Scope "/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Storage/storageAccounts/$dataLakeAccountName" -ErrorAction SilentlyContinue;
+
 # Create database
 write-host "Creating the $sqlDatabaseName database..."
 sqlcmd -S "$synapseWorkspace.sql.azuresynapse.net" -U $sqlUser -P $sqlPassword -d $sqlDatabaseName -I -i setup.sql
@@ -184,5 +182,8 @@ Get-ChildItem "./data/*.csv" -File | Foreach-Object {
     Set-AzStorageBlobContent -File $_.FullName -Container "files" -Blob $blobPath -Context $storageContext
 }
 
+# Pause SQL Pool
+write-host "Pausing the $sqlDatabaseName SQL Pool..."
+Suspend-AzSynapseSqlPool -WorkspaceName $synapseWorkspace -Name $sqlDatabaseName -AsJob
 
 write-host "Script completed at $(Get-Date)"
