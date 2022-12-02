@@ -196,8 +196,13 @@ Get-ChildItem "./data/*.csv" -File | Foreach-Object {
 write-host "Creating Directory..."
 $storageAccount = Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $dataLakeAccountName
 $storageContext = $storageAccount.Context
+Get-ChildItem "./customer-output/*.*" -File | Foreach-Object {
+    write-host ""
+    $file = $_.Name
+    Write-Host $file
+    $blobPath = "data/$file"
     Set-AzStorageBlobContent -File $_.FullName -Container "customer-output" -Blob $blobPath -Context $storageContext
-
+}
 
 # Pause SQL Pool
 write-host "Pausing the $sqlDatabaseName SQL Pool..."
