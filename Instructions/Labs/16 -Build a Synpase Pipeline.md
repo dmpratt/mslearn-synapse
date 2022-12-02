@@ -128,41 +128,46 @@ Unlike Azure Data Factory, which requires a separate service to be installed in 
 
     ![Build azure data flow pipeline](./images/build-transform-pipeline.png)
 
-5. In the properties of the Dataflow1 name, it **CustomerTransform**
-6. Selecting the **DataFlow** on the canvas, in the **Source settings** tab name the **Output stream name** to **CustomersDB**.
-7. Select on **+ New** to create a new Dataset choosing **Azure Data Lake Storage Gen2** then select **continue**
+5. In the properties of the ***Dataflow1*** name, it **CustomerTransform**.
+6. Beneath the **CustomerTransform** tab, select the **Add Source** on the canvas.
+7. Selecting the **DataFlow** on the canvas, in the **Source settings** tab, name the **Output stream name** to **CustomersDB**.
+8. Moving down to the **Dataset**, Select **+ New** to create a new Dataset choosing **Azure Data Lake Storage Gen2** 
+9. select **continue**
 
      ![New Dataset Canvas](./images/new-dataset-canvas.png)
 
-8. Select **DelimitedText** and then Select **Continue**
+10. Select **DelimitedText**.
 
     ![Select Delimited Text](./images/select-format-canvas.png)
 
-9. Name your dataset **CustomersText**. In the **Linked service** drop-down, choose your **Synapsexxxxxx** instance. At this point, a **New Linked Service** panel will open.
-10. Change the **Name** to **CustomerLinkService**, Select your appropriate **Azure Subscription**, and the **Storage account name** for **datalakexxxxxx**, then select **Create**
+11. Select **Continue**
+13. Name your dataset **CustomersText**. In the **Linked service** drop-down, choose your **Synapsexxxxxx-WorspaceDefaultStorage** instance. 
+14. In the **File Path** browse to ***Files***, ***data***, and select ***dimCustomer.csv***
+15. Ensure the checkbox ***First Row as Header*** is selected.
+16. Select **OK** on the **Set Properties** tab, your **CustomersText** panel should look similar to below:
+
+    ![Customer Text Congfiguration](./images/custom-text-panel.png)
+17. Change the **Name** to **CustomerLinkService**, Select your appropriate **Azure Subscription**, and the **Storage account name** for **datalakexxxxxx**, then select **Create**
 
     ![New Linked Service](./images/new-linked-service.png)
 
-11. In the **File Path** brows to ***Files***, ***data***, ***dimCustomer.csv***
-12. Select **OK** on the **Set Properties** tab, your **CustomersText** panel should look similar to below:
 
-    ![Customer Text Congfiguration](./images/custom-text-panel.png)
 
-13. If not selected above, select **First row as header** and then select **preview data** in the line of the **File path**. your results should look similar to below:
+15. If not selected above, select **First row as header** and then select **preview data** in the line of the **File path**. your results should look similar to below:
 
     ![Preview data for CustomerText](./images/preview-customer-data.png)
 
-14. Close the preview window and return to the **Dataflow1** tab, move the ***Data flow debug*** switch to on and then select **OK** accepting the default values in the **Turn on data flow debug**.
-16. on the **CustomersDB** select **Projection** and then select the **Import projection** to populate the schema if it's not already populated.
+16. Close the preview window and return to the **Dataflow1** tab, move the ***Data flow debug*** switch to on and then select **OK** accepting the default values in the **Turn on data flow debug**.
+17. on the **CustomersDB** select **Projection** and then select the **Import projection** to populate the schema if it's not already populated.
 
     ![Import Schema Projection](./images/import-schema-projection.png)
 
-17. Select the **+** on the bottom right-hand side of the ***CustomersDB*** **Data source** and select **Filter**.
+18. Select the **+** on the bottom right-hand side of the ***CustomersDB*** **Data source** and select **Filter**.
 
     ![Filter selection](.images/../images/select-filter-transform.png)
 
-18. In the Filter settings, **select Filter on** and select on the text ***Enter filter...***, select ***Open expression builder***
-19. In the **Output Stream name** enter ***OldestCustomers***, next in the filter on type the following code:
+19. In the Filter settings, **select Filter on** and select on the text ***Enter filter...***, select ***Open expression builder***
+20. In the **Output Stream name** enter ***OldestCustomers***, next in the filter on type the following code:
 
 ```powershell
 toInteger(left(DateFirstPurchase, 4)) <= 2011
