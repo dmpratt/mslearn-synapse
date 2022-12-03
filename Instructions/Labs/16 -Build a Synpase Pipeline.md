@@ -117,12 +117,14 @@ Open the sales folder and the orders folder it contains, and observe the files c
 12. In Synapse Studio, select the **Monitor** page, and in the **Pipeline runs** tab, wait for the **Copy DimCustomers** pipeline to complete with a status of **Succeeded** (you can use the **&#8635; Refresh** button on the Pipeline runs page to refresh the status).
 13. View the **Integrate** page, and verify that it now contains a pipeline named **Copy StageCustomer**.
 
-### Verify the data is loaded
+### Verify the Data Table Exists
 
 1. In Synapse Studio, select the **Data** page and expand the **SQL database**, then expand the ***sqlxxxxxxx (SQL)***
-2. Expand **Tables** and select **DimCustomer**, then select the ellipse, select **New SQL script**, then select ***Select TOP 100 rows*** which will execute automatically and show the rows that were loaded with the **Built-in copy task**
+2. Expand **Tables** and select **DimCustomer**, then select the ellipse, select **New SQL script**, then select ***Select TOP 100 rows***
+3. Press the Run button on the top left of the query pane.
+4. You should see an empty result set as shown below.
 
-    ![Query results from pipeline load](./images/built-in-copy-results.png)
+    ![Query results from pipeline load](./images/built-in-copy-initial-results.png)
 
 ## Build a Transformation Pipeline in Azure
 
