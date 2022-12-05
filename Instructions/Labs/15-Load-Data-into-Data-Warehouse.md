@@ -297,11 +297,17 @@ After loading new data into the data warehouse, it's a recommended [best practic
 
 The following example rebuilds all indexes on the DimProduct table.
 
+1. type or copy/paste the following query into a ***new or existing query window***.
+2. Press the **Run** button to execute the code.
+
 ```sql
 ALTER INDEX ALL ON dbo.DimProduct REBUILD
 ```
 
 The following example creates statistics on the ProductCategory column of the DimProduct table:
+
+1. type or copy/paste the following query into a ***new or existing query window***.
+2. Press the **Run** button to execute the code.
 
 ```sql
 CREATE STATISTICS productcategory_stats
