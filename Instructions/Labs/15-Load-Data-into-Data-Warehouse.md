@@ -72,9 +72,7 @@ Open the sales folder and the orders folder it contains, and observe that the or
 
 ## Load data warehouse tables
 
-One of the most common patterns for loading a data warehouse is to transfer data from source systems to files in a data lake, ingest the file data into staging tables, and then use SQL statements to load the data from the staging tables into the dimension and fact tables. Usually data loading is performed as a periodic batch process in which inserts and updates to the data warehouse are coordinated to occur at a regular interval (for example, daily, weekly, or monthly).
-
-There are many technologies you can use to load data, including pipelines created using Azure Synapse Analytics or Azure Data Factory, SQL Server Integration Services packages, or command line tools like the bulk copy program (BCP). In this unit, we'll focus on SQL-based techniques to ingest data from a data lake.
+Let's look at some SQL Based approaches to loading data into the Data Warehouse.
 
 1. Select the  **Data** panel.
 2. Within this panel, select the **workspace** tab.
@@ -92,6 +90,11 @@ If you use external tables for staging, there's no need to load the data into th
 
 >**NOTE**: Change the ***datalakexxxxxx*** with the name of your datalake name created during the beginning of the lab
 
+1. In the previously opened ***SQL Script*** type or copy the following code into the window.
+2. Be sure to replace the name, "datalakexxxxxxx." with the name of your datalake created during the beginning of the lab.
+
+
+
 ```sql
 COPY INTO dbo.StageProduct
     (ProductID, ProductAlternateKey, ProductName, ProductCategory, Color, Size, ListPrice, Discontinued)
@@ -105,8 +108,16 @@ WITH
 );
 ```
 
+3. Run the script by pressing the ctrl + e key combination or pressing the play button at the top of the panel.
+4. This "staging" table allows us to review and change anything before moving or using it to append to or upsert into the existing dimension tables and supports type 1,2, and 3 SCD.
+
 Let's also bring in another table, which will be used for later using the same method.
+
+1. In the previously opened ***SQL Script*** type or copy the following code into the window.
+
 >**NOTE**: Don't forget to change the ***datalakexxxxxx*** with the name of your datalake name in both the ```FROM``` and the ```ERRORFILE``` elements below.
+
+3. Run the script by pressing the ctrl + e key combination or pressing the play button at the top of the panel.
 
 ```sql
 COPY INTO dbo.StageCustomer
@@ -125,7 +136,12 @@ WITH
 --END
 GO
 ```
+4. Check your results by typing the following query to verify the data was loaded properly.
 
+```tsql
+SELECT Top 100 *
+FROM StageCustomer
+```
 ## Loading staged data into dimension tables
 
 Once you've staged and verified the data you can use it to look for changes between the existing and new data (Deltas), perform lookups to detect changes in dimensions, or load it into the dimension tables using SQL.
@@ -210,17 +226,7 @@ select top 100 * from hdfsCustomer
 
 ## Updating Dimension tables
 
-There are multiple kinds of slowly changing dimension, of which three are commonly implemented:
-
-* Type 0: Dimension data can't be changed. Any attempted changes fail.
-* Type 1: A change made to an existing dimension row applies to all previously loaded facts related to the dimension.
-* Type 2: A change to a dimension results in a new dimension row. Existing rows for previous versions of the dimension are retained for historical fact analysis and the new row is applied to future fact table entries.
-  
-Let's take a look at an example of a Type 1 change. Suppose a store changes its name from "High Street Store" to "Town Center Store". In this case, the change should be reflected for all new sales and also all existing historical sales - so any queries that aggregate sales by store name should include all previous sales in the total for the store, regardless of the name change. To handle this change, the load process must identify the existence of any current rows for the affected store in the dimension table based on the alternate key, and update them to change the store name.
-
-Now let's consider an example of a Type 2 change. Suppose a customer changes their address because they move to a new city. In this case, you would want all existing historical sales to still be counted under the city where the customer lived when the sale was made, and all future sales after they moved to be counted under their new city. To handle this change, the load process must create a new row for the customer with a new surrogate key (but the same alternate key) to reflect the new address. Optionally, the table could include a Boolean column to indicate which record for this alternate key is the currently active record, or a DateTime column to indicate the point in time from which the new record applies (otherwise you can rely on an incrementing surrogate key and use the MAX function to find the most recently inserted row for a given alternate key.).
-
-Logic to implement Type 1 and Type 2 updates can be complex, and there are various techniques you can use. For example, you could use a combination of UPDATE and INSERT statements as shown in the following code example:
+As discussed in the module, there are 
 
 ```sql
 -- Insert new customers noting the schemas of the tables are identical
