@@ -29,7 +29,7 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
 
     > **Note**: If you have previously created a cloud shell that uses a *Bash* environment, use the the drop-down menu at the top left of the cloud shell pane to change it to ***PowerShell***.
 
-3. Note that Cloud Shell can be resized by dragging the separator bar at the top of the pane, or by using the—, **&#9723;**, and **X** icons at the top right of the pane to minimize, maximize, and close the pane. For more information about using the Azure Cloud Shell, see the [Azure Cloud Shell documentation](https://docs.microsoft.com/azure/cloud-shell/overview).
+3. Cloud Shell can be resized by dragging the separator bar at the top of the pane, or by using the—, **&#9723;**, and **X** icons at the top right of the pane to minimize, maximize, and close the pane. For more information about using the Azure Cloud Shell, see the [Azure Cloud Shell documentation](https://docs.microsoft.com/azure/cloud-shell/overview).
 
 4. In the PowerShell pane, enter the following commands to clone this repository:
 
@@ -45,18 +45,18 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
     ./setup.ps1
     ```
 
-6. If prompted, choose which subscription you want to use (this will only happen if you have access to multiple Azure subscriptions).
+6. If prompted, choose which subscription you want to use (this option will only happen if you have access to multiple Azure subscriptions).
 7. When prompted, enter a suitable password to be set for your Azure Synapse SQL pool.
 
     > **Note**: Be sure to remember this password!
 
-8. Wait for the script to complete - this typically takes around 10 minutes, but in some cases may take longer. While you're waiting, review the [dedicated SQL pool (formerly SQL DW) in Azure Synapse Analytics](https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-overview-what-is) article in the Azure Synapse Analytics documentation.
+8. Wait for the script to complete - typically this takes around 10 minutes, but in some cases may take longer. While you're waiting, review the [dedicated SQL pool (formerly SQL DW) in Azure Synapse Analytics](https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-overview-what-is) article in the Azure Synapse Analytics documentation.
 
 ## View and Navigate Synapse Workspace
 
 1. After the script has completed, in the Azure portal, go to the dp000-xxxxxxx resource group that it created, and select your Synapse workspace.
 2. In the Overview page for your Synapse Workspace, in the Open Synapse Studio card, select Open to open Synapse Studio in a new browser tab; signing in if prompted.
-3. On the left side of Synapse Studio, use the ›› icon to expand the menu - this reveals the different pages within Synapse Studio that you’ll use to manage resources and perform data analytics tasks.
+3. On the left side of Synapse Studio, use the ›› icon to expand the menu - revealing the different pages within Synapse Studio that you’ll use to manage resources and perform data analytics tasks.
 4. On the Data page, view the Linked tab and verify that your workspace includes a link to your Azure Data Lake Storage Gen2 storage account, which should have a name similar to **synapsexxxxxxx (Primary - datalakexxxxxxx)**.
 5. Expand your storage account and verify that it contains a file system container named **files (primary)**.
 6. Select the files container, and note that it contains folders named data and synapse. The synapse folder is used by Azure Synapse, and the data folder contains the data files you're going to query.
@@ -66,9 +66,9 @@ Open the sales folder and the orders folder it contains, and observe that the or
 ### Start the dedicated SQL pool
 
 1. Open the **synapse*xxxxxxx*** Synapse workspace, and on its **Overview** page, in the **Open Synapse Studio** card, select **Open** to open Synapse Studio in a new browser tab; signing in if prompted.
-2. On the left side of Synapse Studio, use the **&rsaquo;&rsaquo;** icon to expand the menu - this reveals the different pages within Synapse Studio.
-3. On the **Manage** page, on the **SQL pools** tab, select the row for the **sql*xxxxxxx*** dedicated SQL pool and use its **&#9655;** icon to start it; confirming that you want to resume it when prompted.
-4. Wait for the SQL pool to resume. This can take a few minutes. You can use the **&#8635; Refresh** button to check its status periodically. The status will show as **Online** when it is ready.
+2. On the left side of Synapse Studio, use the **&rsaquo;&rsaquo;** icon to expand the menu - revealing the different pages within Synapse Studio.
+3. On the **Manage** page, on the **SQL pools** tab, select the row for the **sql*xxxxxxx*** dedicated SQL pool and use it's **&#9655;** icon to start it; confirming that you want to resume it when prompted.
+4. Wait for the SQL pool to resume. This can take a few minutes. You can use the **&#8635; Refresh** button to check its status periodically. The status will show as **Online** when it's ready.
 
 ## Load data warehouse tables
 
@@ -90,7 +90,7 @@ If you use external tables for staging, there's no need to load the data into th
 
 >**NOTE**: Change the ***datalakexxxxxx*** with the name of your datalake name created during the beginning of the lab
 
-1. In the previously opened ***SQL Script*** type or copy the following code into the window.
+1. In the previously opened ***SQL Script*** type or, copy the following code into the window.
 2. Press the **Run** button at the top of the ***SQL Script*** pane.
 
 ```sql
@@ -121,11 +121,11 @@ FROM dbo.StageProduct
 ```
 
 5. Run the script by pressing the ctrl + e key combination or pressing the **Run** button at the top of the panel.
-6. This "staging" table allows us to review and change anything before moving or using it to append to or upsert into the existing dimension tables and supports type 1,2, and 3 SCD.
+6. The use of "staging" tables allows us to review and change anything before moving or using it to append to or upsert into any existing dimension tables. The structure of this table will vary slightly as your read during the module depending upon the type of SCD used.
 
 Let's also bring in another table, which will be used for later using the same method.
 
-1. In the previously opened ***SQL Script*** type or copy the following code into the window.
+1. In the previously opened ***SQL Script*** type or, copy the following code into the window.
 
 >**NOTE**: Don't forget to change the ***datalakexxxxxx*** with the name of your datalake name in both the ```FROM``` and the ```ERRORFILE``` elements below.
 
@@ -192,7 +192,7 @@ FROM dbo.StageProduct
 WHERE Color != 'NA' -- Pull Everything except undefined colors
 ```
 
-3. As you can read from the query, we are using the StageProduct table with a filter on the color column and creating a new table named DimProduct. This table DimProduct is a distrbuted table using ProductAltKey as it's hash distribution key and also has a Clustered Columnstore Index (CCI). 
+3. As you can read from the query, we are using the StageProduct table with a filter on the color column and creating a new table named DimProduct. This table DimProduct is a distributed table using ProductAltKey as it's hash distribution key and also has a Clustered Columnstore Index (CCI). 
 4. You can view the results of this table by typing or copying/pasting the following code into the window below the CTAS.
 
 ```sql
