@@ -192,7 +192,7 @@ FROM dbo.StageProduct
 WHERE Color != 'NA' -- Pull Everything except undefined colors
 ```
 
-3. As you can read from the query, we are using the StageProduct table with a filter on the color column and creating a new table named DimProduct. This table DimProduct is a distributed table using ProductAltKey as it's hash distribution key and also has a Clustered Columnstore Index (CCI). 
+3. As you can read from the query, we're using the StageProduct table with a filter on the color column and creating a new table named DimProduct. This table DimProduct is a distributed table using ProductAltKey as its hash distribution key and also has a Clustered Columnstore Index (CCI). 
 4. You can view the results of this table by typing or copying/pasting the following code into the window below the CTAS.
 
 ```sql
@@ -211,8 +211,8 @@ FROM dbo.DimProduct
 
 As discussed in the module, there are several types of slowly changing dimensions (SCDs) and techniques to update them. let's look at a few.
 
-1. type and run or copy/paste the following query into a new query window.
-2. It's best to run each of the SCDs individually and then run a query before and after to see the actual impact on the table/row.
+1. type or copy/paste the following query into a new query window.
+2. It's best to run each of the SCDs individually and then run a query before and after to see the actual impact on the table/row but in this run, we're going to perform several different types of SCDs.
 
 ```sql
 -- Insert new customers noting the schemas of the tables are identical
@@ -257,7 +257,12 @@ ON stg.CustomerKey = dim.CustomerKey
 WHERE stg.AddressLine1 <> dim.AddressLine1 OR stg.AddressLine2 <> dim.AddressLine2;
 ```
 
+3. Press the **Run** button or ctrl + e to execute the code.
+
 As an alternative to using multiple ```INSERT``` and ```UPDATE``` statement, you can use a single ```MERGE``` statement to perform an ```UPSERT``` operation to insert new records and update existing ones, as shown in the following example, which loads new product records and applies type 1 updates to existing products:
+
+1. type or copy/paste the following query into a ***new query window***.
+2. Press the **Run** button to execute the code.
 
 ```sql
 MERGE dbo.DimProduct AS tgt
@@ -288,7 +293,7 @@ WHEN NOT MATCHED THEN
 
 ## Optimize Load Performance
 
-After loading new data into the data warehouse, it's a a recommended [best practice](https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-tables-statistics) to rebuild the table columnstore indexes and update statistics on commonly queried columns.
+After loading new data into the data warehouse, it's a recommended [best practice](https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-tables-statistics) to rebuild the table columnstore indexes and update statistics on commonly queried columns.
 
 The following example rebuilds all indexes on the DimProduct table.
 
