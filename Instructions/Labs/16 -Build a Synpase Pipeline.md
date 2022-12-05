@@ -71,7 +71,7 @@ Open the sales folder and the orders folder it contains, and observe the files c
 1. Open the **synapse*xxxxxxx*** Synapse workspace, and on its **Overview** page, in the **Open Synapse Studio** card, select **Open** to open Synapse Studio in a new browser tab; signing in if prompted.
 2. On the left side of Synapse Studio, use the **&rsaquo;&rsaquo;** icon to expand the menu - this reveals the different pages within Synapse Studio.
 3. On the **Manage** page, on the **SQL pools** tab, select the row for the **sql*xxxxxxx*** dedicated SQL pool and use its **&#9655;** icon to start it; confirming that you want to resume it when prompted.
-4. Wait for the SQL pool to resume. This can take a few minutes. You can use the **&#8635; Refresh** button to check its status periodically. The status will show as **Online** when it is ready.
+4. Wait for the SQL pool to resume. This can take a few minutes. You can use the **&#8635; Refresh** button to check its status periodically. The status will show as **Online** when it's ready.
 
 ## Build a copy pipeline
 
@@ -133,7 +133,7 @@ Unlike Azure Data Factory, which requires a separate service to be installed in 
 1. From Synapse studio, on the **Home** page, select the **Integrate** icon to open the **Integrate Pipeline** tool
 2. Select the (+) symbol and select **Pipeline** which loads the familiar Orchestration tool if you've used Azure Data Factory (ADF) before.
 3. On the far right of the **Activities** tab, turn the ***Dataflow debug*** slider to the right.
-4. In the **Turn on data flow debug** tab, click **Ok**.
+4. In the **Turn on data flow debug** tab, select **Ok**.
 5. Under the **Activities** tab, select the **Move & transform** option and then drag **Data flow** onto the canvas.
 6. Under the **Settings** tab of the **Data flow**  select the **+ New** to create a new **Dataflow** as shown below:
 
@@ -142,7 +142,7 @@ Unlike Azure Data Factory, which requires a separate service to be installed in 
 7. In the properties of the ***Dataflow1*** name, it **CustomerTransform**.
 8. select the shaded **Add Source** option on the canvas.
 9. Selecting the **DataFlow** on the canvas, in the **Source settings** tab, name the **Output stream name** to **CustomersDB**.
-10. Moving down to the **Dataset**, Select **+ New** to create a new Dataset choosing **Azure Data Lake Storage Gen2** 
+10. Further down to the **Dataset**, Select **+ New** to create a new Dataset choosing **Azure Data Lake Storage Gen2** 
 11. select **continue**
 
      ![New Dataset Canvas](./images/new-dataset-canvas.png)
@@ -203,7 +203,7 @@ toInteger(left(DateFirstPurchase, 4)) <= 2011
 26.  Name the **Output stream name** ***OldestCustomersSink*** and then select **+ New** on the **Dataset** line.
 27.  Select **Azure Data Lake Storage Gen2** and then select the **Continue** button.
 28.  Select the **DelimitedText** format and select the **Continue** button.
-29.  On the **Set properties** replace ***DelimitedText1*** in the **Name** field with ***CustomerAggregates***.
+29.  On the **Set properties**, replace ***DelimitedText1*** in the **Name** field with ***CustomerAggregates***.
 30.  Select the appropriate **WorkspaceDefaultStorage** created in earlier steps.
 31.  In the **File path** row, select the browse button and navigate to ***Files/Data*** then select **Ok**.
 32.  Leave the final cell **File name** blank as it will automatically populate the results.
@@ -215,18 +215,21 @@ toInteger(left(DateFirstPurchase, 4)) <= 2011
 
 We can debug the pipeline before we publish it. In this step, you're going to trigger a debug run of the data flow pipeline. While data preview doesn't write data, a debug run will write data to your sink destination. This was made possible by selecting the **Data flow debug** option earlier in the lab.
 
-1. Select the **Pipeline 1** tab on the canvas. Click **Debug** to start a debug run.
+1. Select the **Pipeline 1** tab on the canvas. Select **Debug** to start a debug run.
 
  ![Pipeline final structure](./images/debug-synapse-pipeline.png)
 
-2. Click on the **refresh** icon to view the status of the pipeline in debug mode.
+2. Select on the **refresh** icon to view the status of the pipeline in debug mode.
 
    ![Pipeline debug](./images/debug-synapse-pipeline-refresh.png)
 
 3. Once the package has been debugged, it's time to **Publish** using the **Publish all** button above the **Pipeline 1** tab and development canvas
 
    ![Publish packages](./images/publish-pane.png)
-4. Click on the **Data** tab in Synapse Studio and then select the **Linked** tab.
+4. Select the **Data** tab in Synapse Studio and then select the **Linked** tab.
+5. Expand **Integration Datasets** you'll see the two datasets created during this lab, ***CustomerAggregates*** and ***CustomersText***.
+6. Navigating to the **Develop** tab in Synapse Studio, under the **Data flows** you'll find the ***CustomerTransformation*** data flow package, which we just ran.
+7. Navigating to the **Integrate** tab in Synapse Studio, under **Pipelines** you'll find the ***Pipeline 1*** which is the top level of the pipeline we created.
    
 ## Delete Azure resources
 
