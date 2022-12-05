@@ -91,6 +91,7 @@ If you use external tables for staging, there's no need to load the data into th
 >**NOTE**: Change the ***datalakexxxxxx*** with the name of your datalake name created during the beginning of the lab
 
 1. In the previously opened ***SQL Script*** type or copy the following code into the window.
+2. Press the **Run** button at the top of the ***SQL Script*** pane.
 
 ```sql
 SELECT COUNT(1) 
@@ -98,7 +99,8 @@ FROM dbo.StageProduct
 
 ```
 
-2. Be sure to replace the name, "datalakexxxxxxx." with the name of your datalake created during the beginning of the lab.
+3. Be sure to replace the name, "datalakexxxxxxx." with the name of your datalake and prefix created during the beginning of the lab.
+4. Copy/paste or type the following code into ***SQL Script*** window.
 
 ```sql
 COPY INTO dbo.StageProduct
@@ -118,8 +120,8 @@ FROM dbo.StageProduct
 
 ```
 
-3. Run the script by pressing the ctrl + e key combination or pressing the **Run** button at the top of the panel.
-4. This "staging" table allows us to review and change anything before moving or using it to append to or upsert into the existing dimension tables and supports type 1,2, and 3 SCD.
+5. Run the script by pressing the ctrl + e key combination or pressing the **Run** button at the top of the panel.
+6. This "staging" table allows us to review and change anything before moving or using it to append to or upsert into the existing dimension tables and supports type 1,2, and 3 SCD.
 
 Let's also bring in another table, which will be used for later using the same method.
 
