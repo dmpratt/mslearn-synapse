@@ -67,8 +67,10 @@ Earlier in a lab we created a Synapse Notebook and created some tables. We're go
 ## Create a parameter cell
 
 1. On the **Develop** tab, select the notebook named **Spark Transform**
-2. Below the section in the notebook named **Load Source Data** and below the code block that populates the ***order_details*** python dataframe, click on the **+ Code**.
-3. Type or paste the following commands into the new code window.
+2. in the Right panel of the **Spark Transform** notebook, click on the drop-down box to the right of the **Attach to**
+3. Select **sparkxxxxxxx** replacing the "x" elements with the suffix assigned in your setup script
+4. Below the section in the notebook named **Load Source Data** and below the code block that populates the ***order_details*** python dataframe, click on the **+ Code**.
+5. Type or paste the following commands into the new code window.
 
 ```python
 # We're going to use this for integration into a Synapse Pipleline
@@ -80,14 +82,21 @@ print("Your parquet file to be created: " + runId)
 ```
 
 4. Mouse-over the code and select the **...** ellipse on the right-side of the code block then select **Toggle parameter cell**. You will notice the text ***parameters*** now appear in the bottom-right or top-right corner of the code block.
+
+    ![Changing uuid to a parameter](images/select-as-parameter.png)
+
 5. Below this code block select the **+ Code** to create another code block.
 6. Type or paste the following commands into the new window
 
 ```python
 %%pyspark
 
-order_details.write.parquet('abfss://files@<YOURDATALAKEXXXXXX>.dfs.core.windows.net/data/order_details/' + str(runId) + '.parquet')
+order_details.write.parquet('abfss://files@datalakexxxxxxx.dfs.core.windows.net/data/order_details/' + str(runId) + '.parquet')
 ```
 
-7. Replace the text in the new code **<YOURDATALAKEXXXXXX>** with the name of the data lake within your **Resource Group** during the lab build.
+7. Replace the text in the new code **datalakexxxxxxx** with the name of the data lake within your **Resource Group** during the lab build.
+8. On the top right of the notebook pane, select the pipeline icon.
+9. select the **New pipeline** option. 
+
+    ![New pipeline](images/new-notebook-pipeline.png)
 
