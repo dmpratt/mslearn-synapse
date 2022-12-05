@@ -138,7 +138,7 @@ GO
 ```
 4. Check your results by typing the following query to verify the data was loaded properly.
 
-```tsql
+```sql
 SELECT Top 100 *
 FROM StageCustomer
 ```
@@ -156,6 +156,9 @@ The CREATE TABLE AS SELECT (CTAS) expression has various uses, which include:
     3. creating aggregate tables quickly for report purposes.
 
 The statement allows for creating a new table with the results of a SELECT statement.
+
+1. Create a new Query window or use the existing one making sure to highlight all existing content and delete it first. 
+2. Type or paste the following code into the Query window
 
 ```sql
 CREATE TABLE dbo.DimProduct
@@ -177,56 +180,27 @@ FROM dbo.StageProduct
 WHERE Color != 'NA' -- Pull Everything except undefined colors
 ```
 
-By default, tables are Round Robin distributed. This default makes it easy for users to start creating tables without having to decide how their tables should be distributed. Round Robin tables may perform sufficiently for some workloads. But, in most cases, a distribution column provides better performance.
-
-The most common example of a table distributed by a column outperforming a round robin table is when two large fact tables are joined.
-
-For example, if you have an orders table distributed by order_id, and a transactions table also distributed by order_id. When you join your orders table to your transactions table on order_id, this query becomes a pass-through query. Data movement operations are then eliminated. Fewer steps mean a faster query. Less data movement also makes for faster queries.
-
-The CTAS operation will allow us to use the round-robin table type for loading in those cases and then create a distributed table once the data is understood within the warehouse.
-
-## Using a CREATE EXTERNAL TABLE AS SELECT (CETAS)
-
-You can use CREATE EXTERNAL TABLE AS SELECT (CETAS) in dedicated SQL pool or serverless SQL pool to complete the following tasks:
-
-- Create an external table
-- Export, in parallel, the results of a Transact-SQL SELECT statement to:
-  - Hadoop
-  - Azure Storage Blob
-  - Azure Data Lake Storage Gen2
-
->**NOTE**: Change the ***datalakexxxxxx*** with the name of your datalake name created during the beginning of the lab. If you execute this script prior to changing it you will have to drop and recreate the EXTERNAL DATA SOURCE.
+3. As you can read from the query, we are using the StageProduct table with a filter on the color column and creating a new table named DimProduct. This table DimProduct is a distrbuted table using ProductAltKey as it's hash distribution key and also has a Clustered Columnstore Index (CCI). 
+4. You can view the results of this table by typing or copying/pasting the following code into the window below the CTAS.
 
 ```sql
--- Create the external datasource (changing the suffix to match yours
-IF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'MyDataSource') 
- CREATE EXTERNAL DATA SOURCE [MyDataSource] 
- WITH (
-  LOCATION = 'abfss://files@datalakexxxxxxx.dfs.core.windows.net', 
-  TYPE = HADOOP 
- )
-
- -- Create the parquet format with a Gzip Codec
-CREATE EXTERNAL FILE FORMAT MyParquet  
-WITH (  
-    FORMAT_TYPE = PARQUET  
-    , DATA_COMPRESSION = 'org.apache.hadoop.io.compress.GzipCodec'  
- );  
-
--- Create the external table
-CREATE EXTERNAL TABLE hdfsCustomer  
-WITH (  
-    LOCATION='/edata/customer.tbl',  
- DATA_SOURCE = MyDataSource, --The Data Source created above
- FILE_FORMAT = MyParquet --The File Format created above
-) AS SELECT * FROM dimCustomer;  
-
-select top 100 * from hdfsCustomer
+SELECT ProductKey,
+    ProductAltKey,
+    ProductName,
+    ProductCategory,
+    Color,
+    Size,
+    ListPrice,
+    Discontinued
+FROM dbo.DimProduct
 ```
 
 ## Updating Dimension tables
 
-As discussed in the module, there are 
+As discussed in the module, there are several types of slowly changing dimensions (SCDs) and techniques to update them. let's look at a few.
+
+1. type and run or copy/paste the following query into a new query window.
+2. It's best to run each of the SCDs individually and then run a query before and after to see the actual impact on the table/row.
 
 ```sql
 -- Insert new customers noting the schemas of the tables are identical
@@ -271,9 +245,7 @@ ON stg.CustomerKey = dim.CustomerKey
 WHERE stg.AddressLine1 <> dim.AddressLine1 OR stg.AddressLine2 <> dim.AddressLine2;
 ```
 
->**NOTE** In the previous example, it is assumed that an incrementing surrogate key based on an ```IDENTITY``` column identifies each row, and that the highest value surrogate key for a given alternate key indicates the most recent or "current" instance of the dimension entity associated with that alternate key. In practice, many data warehouse designers include a Boolean column to indicate the current active instance of a changing dimension or use DateTime fields to indicate the active time periods for each version of the dimension instance. With these approaches, the logic for a type 2 change must include an ```INSERT``` of the new dimension row and an ```UPDATE```to mark the current row as inactive
-
-As an alternative to using multiple ```INSERT``` and ```UPDATE``` statement, you can use a single ```MERGE``` statement to perform an "UPSERT" operation to insert new records and update existing ones, as shown in the following example, which loads new product records and applies type 1 updates to existing products:
+As an alternative to using multiple ```INSERT``` and ```UPDATE``` statement, you can use a single ```MERGE``` statement to perform an ```UPSERT``` operation to insert new records and update existing ones, as shown in the following example, which loads new product records and applies type 1 updates to existing products:
 
 ```sql
 MERGE dbo.DimProduct AS tgt
@@ -304,7 +276,7 @@ WHEN NOT MATCHED THEN
 
 ## Optimize Load Performance
 
-After loading new data into the data warehouse, it's a good idea to rebuild the table columnstore indexes and update statistics on commonly queried columns.
+After loading new data into the data warehouse, it's a a recommended [best practice](https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-tables-statistics) to rebuild the table columnstore indexes and update statistics on commonly queried columns.
 
 The following example rebuilds all indexes on the DimProduct table.
 
