@@ -78,7 +78,7 @@ import uuid
 
 #generates a random GUID
 runId = uuid.uuid4()
-print("Your parquet file to be created: " + runId)
+print("Your parquet file to be created: " + str(runId))
 ```
 
 4. Mouse-over the code and select the **...** ellipse on the right-side of the code block then select **Toggle parameter cell**. You will notice the text ***parameters*** now appear in the bottom-right or top-right corner of the code block.
