@@ -81,7 +81,9 @@ runId = uuid.uuid4()
 print("Your parquet file to be created: " + str(runId))
 ```
 
-4. Mouse-over the code and select the **...** ellipse on the right-side of the code block then select **Toggle parameter cell**. You will notice the text ***parameters*** now appear in the bottom-right or top-right corner of the code block.
+    > **Note**: This cell services two purposes, firstly, it establishes a filename if it's run from within the notebook. Secondly, it defines a placeholder for the pipeline job to populate when running from an Azure Synapse pipeline run.
+
+4. Mouse-over the code and, select the **...** ellipse on the right-side of the code block then select **Toggle parameter cell**. You'll notice the text ***parameters*** now appear in the bottom-right or top-right corner of the code block.
 
     ![Changing uuid to a parameter](images/select-as-parameter.png)
 
@@ -95,8 +97,70 @@ order_details.write.parquet('abfss://files@datalakexxxxxxx.dfs.core.windows.net/
 ```
 
 7. Replace the text in the new code **datalakexxxxxxx** with the name of the data lake within your **Resource Group** during the lab build.
-8. On the top right of the notebook pane, select the pipeline icon.
-9. select the **New pipeline** option. 
+8. We can now remove all of the other code and markdown cells below this text.
+
+    > **Note**: If you leave the other objects, the notebook will still run; however, it will create those objects within the Data lake as it did in the prior lab as the pipeline is running the entire notebook.
+
+9.  On the top right of the notebook pane, select the pipeline icon.
+10. select the **New pipeline** option. 
 
     ![New pipeline](images/new-notebook-pipeline.png)
 
+
+## Within the Pipeline ##
+
+In this particular case, we're going to run the notebook and pass the name as the package's runId for traceability. How you run a notebook in your organization will likely be different. 
+
+1. From the prior step you should now see a new ***Pipeline 1*** which we'll rename to ***Run Spark Transform notebook***
+
+    ![Change pipeline name](images/rename-notebook-pipeline.png)
+
+2. Select the **Notebook** on the canvas and then select the **Settings** tab.
+3. Expand **Base parameters** under the **Settings** tab.
+4. Select the **+New** option and fill in the following information
+   Name: ***runId**
+   Type: String
+   Value: Select ***Add dynamic content [Alt+Shift+D]***
+   **Pipeline Expression Builder**:  Select ***System variables***, select ***Pipeline run ID***
+The resulting settings should look like the image below:
+
+   ![Pipeline parameter settings](images/set-pipeline-parameter.png)
+
+5. Navigate to the **Data** tab and select the **Linked** tab.
+6. Expand **Azure Data Lake Storage Gen2**.
+7. Expand the **synapsexxxxxxx (Primary - datalakexxxxxxx)** that matches your generated suffix.
+8. Select **files (primary)**. You'll note three files (***2019.csv, 2020.csv, 2021.csv***)
+9. Select the **Pipeline** ***Run Spark Transform Notebook***.
+10. Press the **Debug button** which will take you to the **Output** tab.
+    
+    > **Note**: This **Output** tab will continue to refresh every 20 seconds for 5 minutes as the default.
+
+11. Take note of the **Pipeline run ID:** and monitor the **Status**
+
+    ![monitor pipeline status](images/monitor-pipeline-notebook-status.png)
+
+12. Once the **Status** turns green with the words ***succeeded***, navigate to the **files** tab
+13. You shouldn't see a folder named **order_details** underneath the **data** tab, which may require a refresh.
+14. Select this **order_details** folder and you'll see a folder with the **runId** which was passed from the Pipeline to the notebook, which created output in a parquet format.
+
+### Validate the Results ###
+
+1. To validate the data was properly loaded through the pipeline, Select the **New SQL Script** dropdown.
+2. Select ***Select TOP 100 rows*** as shown below
+
+    ![Select parquet results](images/validate-parquet-notebook.png)
+
+3. in the **Select TOP 100 rows** ***File type*** panel, select ***parquet***, then select **Apply**.
+4. Select the **Run** button.
+
+## Delete Azure resources
+
+If you've finished exploring Azure Synapse Analytics, you should delete the resources you've created to avoid unnecessary Azure costs.
+
+1. Close the Synapse Studio browser tab and return to the Azure portal.
+2. On the Azure portal, on the **Home** page, select **Resource groups**.
+3. Select the **dp000-*xxxxxxx*** resource group for your Synapse Analytics workspace (not the managed resource group), and verify that it contains the Synapse workspace, storage account, and Spark pool for your workspace.
+4. At the top of the **Overview** page for your resource group, select **Delete resource group**.
+5. Enter the **dp000-*xxxxxxx*** resource group name to confirm you want to delete it, and select **Delete**.
+
+    After a few minutes, your Azure Synapse workspace resource group and the managed workspace resource group associated with it will be deleted.
