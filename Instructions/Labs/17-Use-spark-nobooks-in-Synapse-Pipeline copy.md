@@ -7,7 +7,7 @@ lab:
 
 ## Introduction
 
-In this lab, we're going to load data into a dedicated SQL Pool using the built-in Synapse Analytics Pipeline located within Azure Synapse Analytics Explorer. This lab will start with a basic copy action and then built up from there
+In this lab, we're going to create a parquet file using the Azure Synapse Pipeline and a Azure Synapse Notebook which we created earlier to create a parquet file passing the runId of the pipeline as the name of the folder in which the contents are stored.
 
 This lab will take approximately **45** minutes to complete.
 
@@ -28,7 +28,7 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
 
     > **Note**: If you have previously created a cloud shell that uses a *Bash* environment, use the the drop-down menu at the top left of the cloud shell pane to change it to ***PowerShell***.
 
-3. Note that Cloud Shell can be resized by dragging the separator bar at the top of the pane, or by using the—, **&#9723;**, and **X** icons at the top right of the pane to minimize, maximize, and close the pane. For more information about using the Azure Cloud Shell, see the [Azure Cloud Shell documentation](https://docs.microsoft.com/azure/cloud-shell/overview).
+3. Note that Cloud Shell can be resized by dragging the separator bar at the top of the pane, or by using the—, **&#9723;**, and **X** icons at the top right of the pane to minimize, maximize, and close the pane. For more information about using the Azure Cloud Shell, see the [Azure Synapse Pipelines](https://learn.microsoft.com/en-us/azure/data-factory/concepts-data-flow-performance-pipelines).
 
 4. In the PowerShell pane, enter the following commands to clone this repository:
 
@@ -40,7 +40,7 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
 5. After the repository has been cloned, enter the following commands to change to the folder for this lab, and run the **setup.ps1** script it contains:
 
     ```powershell
-    cd dp-000/Allfiles/Labs/16
+    cd dp-000/Allfiles/Labs/17
     ./setup.ps1
     ```
     
