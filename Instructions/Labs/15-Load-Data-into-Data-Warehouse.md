@@ -6,9 +6,7 @@ lab:
 
 # Load Data into a Relational Data Warehouse
 
-In this lab, we're going to load data into a dedicated SQL Pool that is a way to gain optimal performance of large datasets and warehouses. We'll use the Create Table as SELECT (CTAS) operation to move data into the dedicated SQL Pool.
-
-In this lab, you'll use a dedicated SQL pool in Azure Synapse Analytics to transform data in files into physical tables in Azure Synapse Analytics.
+In this lab, you're going to load data into a dedicated SQL Pool that is a way to gain optimal performance of large datasets and warehouses. You'll use the Create Table as SELECT (CTAS) operation to move data into the dedicated SQL Pool and you'll use a dedicated SQL pool in Azure Synapse Analytics to transform data in files into physical tables in Azure Synapse Analytics.
 
 This lab will take approximately **30** minutes to complete.
 
@@ -29,7 +27,7 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
 
     > **Note**: If you have previously created a cloud shell that uses a *Bash* environment, use the the drop-down menu at the top left of the cloud shell pane to change it to ***PowerShell***.
 
-3. Cloud Shell can be resized by dragging the separator bar at the top of the pane, or by using the—, **&#9723;**, and **X** icons at the top right of the pane to minimize, maximize, and close the pane. For more information about using the Azure Cloud Shell, see the [Azure Cloud Shell documentation](https://docs.microsoft.com/azure/cloud-shell/overview).
+3. Cloud Shell can be resized by dragging the separator bar at the top of the pane, or by using the —, **&#9723;**, and **X** icons at the top right of the pane to minimize, maximize, and close the pane. For more information about using the Azure Cloud Shell, see the [Azure Cloud Shell documentation](https://docs.microsoft.com/azure/cloud-shell/overview).
 
 4. In the PowerShell pane, enter the following commands to clone this repository:
 
@@ -55,9 +53,9 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
 ## View and Navigate Synapse Workspace
 
 1. After the script has completed, in the Azure portal, go to the dp000-xxxxxxx resource group that it created, and select your Synapse workspace.
-2. In the Overview page for your Synapse Workspace, in the Open Synapse Studio card, select Open to open Synapse Studio in a new browser tab; signing in if prompted.
+2. In the **Overview page** for your Synapse Workspace, in the **Open Synapse Studio** card, select **Open** to open Synapse Studio in a new browser tab; signing in if prompted.
 3. On the left side of Synapse Studio, use the ›› icon to expand the menu - revealing the different pages within Synapse Studio that you’ll use to manage resources and perform data analytics tasks.
-4. On the Data page, view the Linked tab and verify that your workspace includes a link to your Azure Data Lake Storage Gen2 storage account, which should have a name similar to **synapsexxxxxxx (Primary - datalakexxxxxxx)**.
+4. On the **Data** page, view the **Linked** tab and verify that your workspace includes a link to your Azure Data Lake Storage Gen2 storage account, which should have a name similar to **synapsexxxxxxx (Primary - datalakexxxxxxx)**.
 5. Expand your storage account and verify that it contains a file system container named **files (primary)**.
 6. Select the files container, and note that it contains folders named data and synapse. The synapse folder is used by Azure Synapse, and the data folder contains the data files you're going to query.
 Open the sales folder and the orders folder it contains, and observe that the orders folder contains .csv files for dimCustomer, dimDate, dimProduct, and FactInternetSales data.
@@ -121,7 +119,7 @@ FROM dbo.StageProduct
 ```
 
 5. Run the script by pressing the ctrl + e key combination or pressing the **Run** button at the top of the panel.
-6. The use of "staging" tables allows us to review and change anything before moving or using it to append to or upsert into any existing dimension tables. The structure of this table will vary slightly as your read during the module depending upon the type of SCD used.
+6. The use of "staging" tables allows us to review and change anything before moving or using it to append to or upsert into any existing dimension tables. The structure of this table will vary slightly as your read during the module depending upon the type of slowly changing dimensions (SCD) used.
 
 Let's also bring in another table, which will be used for later using the same method.
 
@@ -163,9 +161,10 @@ Once you've staged and verified the data you can use it to look for changes betw
 > ***NOTE*** For more Information, see [CREATE TABLE AS SELECT (CTAS)](https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-develop-ctas) in the Azure Synapse Analytics documentation.
 
 The CREATE TABLE AS SELECT (CTAS) expression has various uses, which include:
-    1. redistributing the hash key of a table to align with other tables for better query performance.
-    2. assigning a surrogate key to a staging table based upon existing values after performing a delta analysis.
-    3. creating aggregate tables quickly for report purposes.
+
+1. redistributing the hash key of a table to align with other tables for better query performance.
+2. assigning a surrogate key to a staging table based upon existing values after performing a delta analysis.
+3. creating aggregate tables quickly for report purposes.
 
 The statement allows for creating a new table with the results of a SELECT statement.
 

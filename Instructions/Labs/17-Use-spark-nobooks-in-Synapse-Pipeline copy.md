@@ -54,9 +54,9 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
 ## View and Navigate Synapse Workspace
 
 1. After the script has completed, in the Azure portal, go to the dp000-xxxxxxx resource group that it created, and select your Synapse workspace.
-2. In the Overview page for your Synapse Workspace, in the Open Synapse Studio card, select Open to open Synapse Studio in a new browser tab; signing in if prompted.
+2. In the **Overview** page for your Synapse Workspace, in the **Open Synapse Studio** card, select **Open** to open Synapse Studio in a new browser tab; signing in if prompted.
 3. On the left side of Synapse Studio, use the ›› icon to expand the menu - this reveals the different pages within Synapse Studio that you’ll use to manage resources and perform data analytics tasks.
-4. On the Data page, view the Linked tab and verify that your workspace includes a link to your Azure Data Lake Storage Gen2 storage account, which should have a name similar to **synapsexxxxxxx (Primary - datalakexxxxxxx)**.
+4. On the **Data** page, view the Linked tab and verify that your workspace includes a link to your Azure Data Lake Storage Gen2 storage account, which should have a name similar to **synapsexxxxxxx (Primary - datalakexxxxxxx)**.
 5. Expand your storage account and verify that it contains a file system container named **files (primary)**.
 6. Select the files container, and note that it contains folders named data and synapse. The synapse folder is used by Azure Synapse, and the data folder contains the data files you're going to query.
 Open the sales folder and the orders folder it contains, and observe the files contained within it.
@@ -118,7 +118,7 @@ In this particular case, we're going to run the notebook and pass the name as th
 2. Select the **Notebook** on the canvas and then select the **Settings** tab.
 3. Expand **Base parameters** under the **Settings** tab.
 4. Select the **+New** option and fill in the following information
-   Name: ***runId**
+   Name: **runId**
    Type: String
    Value: Select ***Add dynamic content [Alt+Shift+D]***
    **Pipeline Expression Builder**:  Select ***System variables***, select ***Pipeline run ID***
@@ -129,7 +129,7 @@ The resulting settings should look like the image below:
 5. Navigate to the **Data** tab and select the **Linked** tab.
 6. Expand **Azure Data Lake Storage Gen2**.
 7. Expand the **synapsexxxxxxx (Primary - datalakexxxxxxx)** that matches your generated suffix.
-8. Select **files (primary)**. You'll note three files (***2019.csv, 2020.csv, 2021.csv***)
+8. Select **files (primary)**. You'll note three files (***2019.csv, 2020.csv, 2021.csv***) in the **data** folder.
 9. Select the **Pipeline** ***Run Spark Transform Notebook***.
 10. Press the **Debug button** which will take you to the **Output** tab.
     
@@ -140,7 +140,7 @@ The resulting settings should look like the image below:
     ![monitor pipeline status](images/monitor-pipeline-notebook-status.png)
 
 12. Once the **Status** turns green with the words ***succeeded***, navigate to the **files** tab
-13. You shouldn't see a folder named **order_details** underneath the **data** tab, which may require a refresh.
+13. You should see a folder named **order_details** underneath the **data** tab, which may require a refresh.
 14. Select this **order_details** folder and you'll see a folder with the **runId** which was passed from the Pipeline to the notebook, which created output in a parquet format.
 
 ### Validate the Results ###

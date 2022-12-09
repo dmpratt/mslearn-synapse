@@ -53,9 +53,9 @@ In this exercise, you'll use a combination of a PowerShell script and an ARM tem
 ## View and Navigate Synapse Workspace
 
 1. After the script has completed, in the Azure portal, go to the dp000-xxxxxxx resource group that it created, and select your Synapse workspace.
-2. In the Overview page for your Synapse Workspace, in the Open Synapse Studio card, select Open to open Synapse Studio in a new browser tab; signing in if prompted.
+2. In the Overview page for your Synapse Workspace, in the **Open Synapse Studio** card, select **Open** to open Synapse Studio in a new browser tab; signing in if prompted.
 3. On the left side of Synapse Studio, use the ›› icon to expand the menu - this reveals the different pages within Synapse Studio that you’ll use to manage resources and perform data analytics tasks.
-4. On the Data page, view the Linked tab and verify that your workspace includes a link to your Azure Data Lake Storage Gen2 storage account, which should have a name similar to **synapsexxxxxxx (Primary - datalakexxxxxxx)**.
+4. On the **Data** page, view the **Linked** tab and verify that your workspace includes a link to your Azure Data Lake Storage Gen2 storage account, which should have a name similar to **synapsexxxxxxx (Primary - datalakexxxxxxx)**.
 5. Expand your storage account and verify that it contains a file system container named **files (primary)**.
 6. Select the files container, and note that it contains folders named data and synapse. The synapse folder is used by Azure Synapse, and the data folder contains the data files you're going to query.
 Open the sales folder and the orders folder it contains, and observe the files contained within it.
@@ -101,7 +101,7 @@ Open the sales folder and the orders folder it contains, and observe the files c
     - **Target**: *Select Existing Table*
     - **-Select-**: dbo.StageCustomer
 7. After selecting the Target, on the **Destination/Destination data store** step, select **Next >**:
-8. On the Column mapping,** ensure the following settings:
+8. On the **Column mapping**, ensure the following settings:
     - **Source**: Checked
     - **Column Mappings**: Review and look for any warnings, you should see a truncation warning on NameStyle, which can be ignored.
 9. On the **Settings** step, enter the following settings and then select **Next >**:
@@ -132,9 +132,9 @@ Unlike Azure Data Factory, which requires a separate service to be installed in 
 
 1. From Synapse studio, on the **Home** page, select the **Integrate** icon to open the **Integrate Pipeline** tool
 2. Select the (+) symbol and select **Pipeline** which loads the familiar Orchestration tool if you've used Azure Data Factory (ADF) before.
-3. On the far right of the **Activities** tab, turn the ***Dataflow debug*** slider to the right.
-4. In the **Turn on data flow debug** tab, select **Ok**.
-5. Under the **Activities** tab, select the **Move & transform** option and then drag **Data flow** onto the canvas.
+3. Under the **Activities** tab, select the **Move & transform** option and then drag **Data flow** onto the canvas.
+4. On the far right of the **Activities** tab, turn the ***Dataflow debug*** slider to the right.
+5. In the **Turn on data flow debug** tab, select **Ok**.
 6. Under the **Settings** tab of the **Data flow**  select the **+ New** to create a new **Dataflow** as shown below:
 
     ![Build azure data flow pipeline](./images/build-transform-pipeline.png)
