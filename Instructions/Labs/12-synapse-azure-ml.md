@@ -147,6 +147,15 @@ Before you can connect to Azure Machine Learning from Azure Synapse Analytics, y
 5. On the **Members** tab, in the **Assign access to** options, select **Managed identity**. Then use the **+ Select members** link to select the **Synapse workspace** managed identity named **synapse*xxxxxxx*** (which is the managed identity used by your **synapse*xxxxxxx*** Azure Synapse Analytics workspace).
 6. Use the **Review + Assign** button to assign the role membership, which adds the **synapse*xxxxxxx*** managed identity account to the **Contributor** role for the **aml*xxxxxxx*** Azure Machine Learning workspace.
 
+Next you will need to grant access to ADLS from Azure Machine Learning.
+
+1. Return to the **dp000-*xxxxxxx*** resource group.
+2. Select the **datalake*xxxxxxx*** storage account.
+3. On the **Access control (IAM)** page for the **datalakexxxxxxx** storage account, select **+ Add**, and select **Add role assignment**.
+4. In the **Add role assignment** page, on the **Role** tab, select the **Contributor** role and then select **Next**.
+5. On the **Members** tab, in the **Assign access to** options, select **Managed identity**. Then use the **+ Select members** link to select the **Azure Machine Learning workspace** managed identity named **amlz*xxxxxxx*** (which is the managed identity used by your **aml*xxxxxxx*** Azure Machine Learning workspace).
+6. Use the **Review + Assign** button to assign the role membership, which adds the **aml*xxxxxxx*** managed identity account to the **Contributor** role for the **datalake*xxxxxxx*** storage account.
+
 ### Create an Azure Machine Learning linked service
 
 Now you can create a linked service to connect your Azure Machine Learning workspace to your Azure Synapse Analytics workspace.
